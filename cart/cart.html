@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shopping Cart - MusicStore</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="cart.css">
+</head>
+<body>
+  <header class="header">
+    <div class="container">
+      <div class="top-bar">
+        <a href="../index.html" class="logo">MusicStore</a> 
+        <nav class="nav">
+          <a href="../account/account.html">Hello, Sign in</a> 
+          <a href="#">Orders</a>
+          <a href="cart.html">Cart</a>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <main class="cart-container">
+    <h1>Cart Items</h1>
+    <div class="cart-content">
+      <section class="cart-items">       
+        <div id="cart-items-container"></div>
+      </section>
+
+      <section class="order-summary">
+        <h2>Order Summary</h2>
+        <div class="summary-item">
+          <span>Subtotal</span>
+          <span id="subtotal">$0.00</span>
+        </div>
+        <div class="summary-item">
+          <span>Shipping</span>
+          <span id="shipping">$5.99</span>
+        </div>
+        <div class="summary-item">
+          <span>Tax</span>
+          <span id="tax">$0.00</span>
+        </div>
+        <div class="summary-item total">
+          <span>Total</span>
+          <span id="total">$0.00</span>
+        </div>
+        <button class="checkout-btn">Proceed to Checkout</button>
+      </section>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <p>&copy; 2024 MusicStore. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="../scripts/cart.js"></script>
+</body>
+</html>

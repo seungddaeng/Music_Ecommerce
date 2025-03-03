@@ -1,0 +1,36 @@
+.album-card {
+    text-align: center;
+    border: 1px solid #ddd;
+    padding: 1rem;
+    border-radius: 8px;
+    transition: transform 0.2s ease-in-out;
+  }
+  
+  .album-card:hover {
+    transform: scale(1.05);
+  }
+  
+  .album-card img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+  }
+  
+  .album-card h3 {
+    font-size: 18px;
+    margin: 0.5rem 0;
+  }
+  
+  .album-card p {
+    font-size: 14px;
+    color: #666;
+  }
+  
+  .album-card .btn {
+    background-color: #aa80ff;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+  }
