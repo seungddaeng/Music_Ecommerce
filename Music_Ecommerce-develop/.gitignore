@@ -1,0 +1,19 @@
+# Ignorar archivos de sistema operativo
+.DS_Store
+Thumbs.db
+
+# Ignorar archivos de IDEs
+.vscode/
+.idea/
+
+# Ignorar archivos de dependencias
+node_modules/
+package-lock.json
+
+# Ignorar archivos de base de datos
+*.sql
+*.db
+
+# Ignorar archivos temporales
+*.tmp
+*.log

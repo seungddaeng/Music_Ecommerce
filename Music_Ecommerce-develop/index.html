@@ -1,0 +1,86 @@
+html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MusicStore - Home</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="components/album-card.css">
+</head>
+<body>
+  <header class="header">
+    <div class="container">
+      <div class="top-bar">
+        <a href="index.html" class="logo">MusicStore</a>
+        <nav class="nav">
+          <a href="account/account.html">Hello, Sign in</a>
+          <a href="#">Orders</a>
+          <a href="cart/cart.html">Cart</a>
+        </nav>
+      </div>
+      <div class="search-bar">
+        <input type="text" id="search-input" placeholder="Search for albums, artists..." class="search-input">
+        <button id="search-button" class="search-button">Search</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <section class="hero">
+      <div class="slider">
+        <div class="slides">
+          <img src="assets/images/slide1.jpg" alt="Slide 1">
+          <img src="assets/images/slide2.jpg" alt="Slide 2">
+          <img src="assets/images/slide3.jpg" alt="Slide 3">
+        </div>
+      </div>
+    </section>
+
+    <section class="featured-albums">
+      <div class="featured-albums-header">
+        <h2>Featured Albums</h2>
+      </div>
+      <div class="album-grid" id="album-grid">
+        <!-- Los álbumes se cargarán dinámicamente -->
+      </div>
+      <button id="load-more" class="btn">Ver más</button>
+    </section>
+  </main>
+
+  <div id="productModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal()">&times;</span>
+      <div class="modal-header">
+        <h2 id="modalTitle"></h2>
+        <p class="stock-info" id="modalStock"></p>
+      </div>
+      <div class="modal-body">
+        <div class="modal-image-container">
+          <img id="modalImage" src="" alt="Album Cover">
+        </div>
+        <div class="product-details">
+          <p id="modalArtist"></p>
+          <p id="modalPrice"></p>
+          <div class="quantity-control">
+            <button onclick="decreaseQuantity()">-</button>
+            <input type="text" id="quantity" value="1" readonly>
+            <button onclick="increaseQuantity()">+</button>
+          </div>
+          <button class="btn" onclick="addToCartFromModal()">Añadir al carrito</button>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <p class="delivery-info">ENTREGA INMEDIATA</p>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="container">
+      <p>&copy; 2024 MusicStore. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="scripts/main.js"></script>
+</body>
+</html>
