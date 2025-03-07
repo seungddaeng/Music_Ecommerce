@@ -144,7 +144,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   
     localStorage.setItem('cart', JSON.stringify(cart));
   
-    alert(`${quantity} ${currentProductName}(s) added to cart!`);
+    alert(`${quantity} ${currentProductName}(s) añadido(s) al carrito!`);
     closeModal();
   }
   
@@ -169,7 +169,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   
     localStorage.setItem('cart', JSON.stringify(cart));
   
-    alert(`${productName} added to cart!`);
+    alert(`${productName} fue añadido al carrito!`);
   }
   
   function displayProducts(products) {
