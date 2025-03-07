@@ -77,21 +77,43 @@ document.addEventListener('DOMContentLoaded', async () => {
   let currentProductStock = 0;
   
   //abre el modal
-  function openModal(title, artist, price, image, stock, productId, productName, productPrice) {
+//  function openModal(title, artist, price, image, stock, productId, productName, productPrice) {
+//
+//    const gitPath = image.replace('.jpg', '-gif.gif')
+//
+//    document.getElementById('modalTitle').innerText = title;
+//    document.getElementById('modalArtist').innerText = artist;
+//    document.getElementById('modalPrice').innerText = price;
+//    document.getElementById('modalImage').src = image;
+//    document.getElementById('modalStock').innerText = `Stock: ${stock}`;
+//    document.getElementById('quantity').value = 1;
+//
+//    currentProductId = productId;
+//    currentProductName = productName;
+//    currentProductPrice = productPrice;
+//    currentProductStock = parseInt(stock);
+//
+//    document.getElementById('productModal').style.display = 'block';
+//  }
+
+function openModal(title, artist, price, image, stock, productId, productName, productPrice) {
+    // Generar la ruta del GIF usando el mismo nombre de la imagen pero con extensión .gif
+    const gifPath = image.replace('.jpg', '-gif.gif');
+
     document.getElementById('modalTitle').innerText = title;
     document.getElementById('modalArtist').innerText = artist;
     document.getElementById('modalPrice').innerText = price;
-    document.getElementById('modalImage').src = image;
+    document.getElementById('modalImage').src = gifPath; // Mostrar el GIF en el modal
     document.getElementById('modalStock').innerText = `Stock: ${stock}`;
     document.getElementById('quantity').value = 1;
-  
+
     currentProductId = productId;
     currentProductName = productName;
     currentProductPrice = productPrice;
     currentProductStock = parseInt(stock);
-  
+
     document.getElementById('productModal').style.display = 'block';
-  }
+}
   
   function closeModal() {
     document.getElementById('productModal').style.display = 'none';
