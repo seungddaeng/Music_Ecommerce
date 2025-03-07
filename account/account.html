@@ -6,6 +6,44 @@
   <title>My Account - MusicStore</title>
   <link rel="stylesheet" href="../styles.css">
   <link rel="stylesheet" href="account.css">
+  <script>
+      function crearCuenta() {
+          const nombreCompleto = document.getElementById("nombreCompleto").value;
+          const email = document.getElementById("correo").value;
+          const nuevaContrasena = document.getElementById("nuevaContrasena").value;
+          const confirmarContrasena = document.getElementById("confirmarContrasena").value;
+  
+          if (!nombreCompleto.trim()) {
+              alert("El nombre completo es obligatorio");
+              return;
+          }
+          if (!email.trim()) {
+              alert("El correo electrónico es obligatorio");
+              return;
+          }
+          if (nuevaContrasena.length < 5 || nuevaContrasena.length > 10) {
+              alert("La contraseña debe tener entre 5 y 10 caracteres");
+              return;
+          }
+          if (nuevaContrasena !== confirmarContrasena) {
+              alert("Las contraseñas no coinciden");
+              return;
+          }
+  
+          const xhr = new XMLHttpRequest();
+          xhr.open("POST", "registrar.php", true);
+          xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+          xhr.onreadystatechange = function () {
+              if (xhr.readyState === 4 && xhr.status === 200) {
+                  alert(xhr.responseText);
+                  if (xhr.responseText === "Registro exitoso") {
+                      window.location.href = "iniciar_sesion.html";
+                  }
+              }
+          };
+          xhr.send(`nombreCompleto=${nombreCompleto}&email=${email}&nuevaContrasena=${nuevaContrasena}`);
+      }
+  </script>
 </head>
 <body>
   <header class="header">
@@ -13,7 +51,7 @@
       <div class="top-bar">
         <a href="../index.html" class="logo">MusicStore</a> 
         <nav class="nav">
-          <a href="account.html">Hello, Sign in</a>
+          <a href="crear_cuenta.html">Hello, Sign in</a>
           <a href="#">Orders</a>
           <a href="../cart/cart.html">Cart</a>
         </nav>
@@ -27,6 +65,14 @@
 
   <main class="account-container">
     <h1>My Account</h1>
+
+    <h2>Crear Cuenta</h2>
+    <input type="text" id="nombreCompleto" placeholder="Nombre Completo">
+    <input type="email" id="correo" placeholder="Correo Electrónico">
+    <input type="password" id="nuevaContrasena" placeholder="Nueva Contraseña">
+    <input type="password" id="confirmarContrasena" placeholder="Confirmar Contraseña">
+    <button onclick="crearCuenta()">Registrar</button>
+    <p><a href="iniciar_sesion.html">Ya tengo una cuenta</a></p>
 
     <div class="sign-out-container">
       <button class="sign-out-btn">Sign Out</button>

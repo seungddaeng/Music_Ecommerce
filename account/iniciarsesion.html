@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear Cuenta</title>
+    <script>
+        function crearCuenta() {
+            const nombreCompleto = document.getElementById("nombreCompleto").value;
+            const email = document.getElementById("correo").value;
+            const nuevaContrasena = document.getElementById("nuevaContrasena").value;
+            const confirmarContrasena = document.getElementById("confirmarContrasena").value;
+
+            // Validaciones
+            if (!nombreCompleto.trim()) {
+                alert("El nombre completo es obligatorio");
+                return;
+            }
+            if (!email.trim()) {
+                alert("El correo electrónico es obligatorio");
+                return;
+            }
+            if (nuevaContrasena.length < 5 || nuevaContrasena.length > 10) {
+                alert("La contraseña debe tener entre 5 y 10 caracteres");
+                return;
+            }
+            if (nuevaContrasena !== confirmarContrasena) {
+                alert("Las contraseñas no coinciden");
+                return;
+            }
+
+            // Guardar los datos del usuario en localStorage
+            localStorage.setItem("nombreCompleto", nombreCompleto);
+            localStorage.setItem("email", email);
+            localStorage.setItem("contrasena", nuevaContrasena);
+
+            alert("Cuenta registrada exitosamente");
+
+            // Redirigir a la página principal
+            window.location.href = "../index.html";  // Redirige a la página principal después del registro
+        }
+    </script>
+</head>
+<body>
+    <h2>Crear Cuenta</h2>
+    <input type="text" id="nombreCompleto" placeholder="Nombre Completo">
+    <input type="email" id="correo" placeholder="Correo Electrónico">
+    <input type="password" id="nuevaContrasena" placeholder="Nueva Contraseña">
+    <input type="password" id="confirmarContrasena" placeholder="Confirmar Contraseña">
+    <button onclick="crearCuenta()">Registrar</button>
+    <p><a href="iniciar_sesion.html">Ya tengo una cuenta</a></p>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const signInLink = document.querySelector("a[href='account/account.html']");
+            if (signInLink) {
+                signInLink.href = "crear_cuenta.html";
+            }
+        });
+    </script>
+</body>
+</html>
