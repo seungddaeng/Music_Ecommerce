@@ -27,7 +27,7 @@ function loadCart() {
 
         const tax = subtotal * 0.1;
 
-        const shipping = 5.99;
+        const shipping = 5.99; // Costo fijo de envío
         const total = subtotal + tax + shipping;
 
         subtotalElement.innerText = `$${subtotal.toFixed(2)}`;

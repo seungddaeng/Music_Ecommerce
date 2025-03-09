@@ -3,9 +3,9 @@ class PaymentAdapter {
         this.paymentMethod = paymentMethod;
     }
 
-    pay(amount) {
-        this.paymentMethod.pay(amount);
+    async pay(amount) {
+        return await this.paymentMethod.pay(amount);
     }
 }
 
-module.exports = PaymentAdapter;
+export default PaymentAdapter;
