@@ -21,6 +21,7 @@ function loadCart() {
                 <button class="remove-btn" onclick="removeFromCart(${item.id})">Remove</button>
             `;
             cartItemsContainer.appendChild(cartItem);
+
             subtotal += item.price * item.quantity;
         });
 
@@ -37,8 +38,11 @@ function loadCart() {
 
 function removeFromCart(productId) {
     let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
     cart = cart.filter((item) => item.id !== productId);
+
     localStorage.setItem('cart', JSON.stringify(cart));
+
     loadCart();
 }
 

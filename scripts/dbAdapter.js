@@ -22,7 +22,7 @@ class MySQLAdapter {
           console.error('Error executing query:', err);
           reject(err);
         } else {
-          console.log('Query results:', results); 
+          console.log('Query results:', results);
           resolve(results);
         }
       });
