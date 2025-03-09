@@ -1,62 +1,80 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crear Cuenta</title>
+    <title>Iniciar Sesión - MusicStore</title>
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="account.css">
     <script>
-        function crearCuenta() {
-            const nombreCompleto = document.getElementById("nombreCompleto").value;
+        function iniciarSesion() {
             const email = document.getElementById("correo").value;
-            const nuevaContrasena = document.getElementById("nuevaContrasena").value;
-            const confirmarContrasena = document.getElementById("confirmarContrasena").value;
+            const contrasena = document.getElementById("contrasena").value;
 
-            // Validaciones
-            if (!nombreCompleto.trim()) {
-                alert("El nombre completo es obligatorio");
-                return;
-            }
             if (!email.trim()) {
                 alert("El correo electrónico es obligatorio");
                 return;
             }
-            if (nuevaContrasena.length < 5 || nuevaContrasena.length > 10) {
-                alert("La contraseña debe tener entre 5 y 10 caracteres");
-                return;
-            }
-            if (nuevaContrasena !== confirmarContrasena) {
-                alert("Las contraseñas no coinciden");
+            if (!contrasena.trim()) {
+                alert("La contraseña es obligatoria");
                 return;
             }
 
-            // Guardar los datos del usuario en localStorage
-            localStorage.setItem("nombreCompleto", nombreCompleto);
-            localStorage.setItem("email", email);
-            localStorage.setItem("contrasena", nuevaContrasena);
-
-            alert("Cuenta registrada exitosamente");
-
-            // Redirigir a la página principal
-            window.location.href = "../index.html";  // Redirige a la página principal después del registro
+            const xhr = new XMLHttpRequest();
+            xhr.open("POST", "/iniciar_sesion", true);
+            xhr.setRequestHeader("Content-Type", "application/json");
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 200) {
+                        const response = JSON.parse(xhr.responseText);
+                        if (response.success) {
+                            alert("Inicio de sesión exitoso");
+                            window.location.href = "../index.html";
+                        } else {
+                            alert("Error: " + response.error);
+                        }
+                    } else {
+                        alert("Error en la solicitud: " + xhr.status);
+                    }
+                }
+            };
+            xhr.send(JSON.stringify({ email: email, contrasena: contrasena }));
         }
     </script>
 </head>
 <body>
-    <h2>Crear Cuenta</h2>
-    <input type="text" id="nombreCompleto" placeholder="Nombre Completo">
-    <input type="email" id="correo" placeholder="Correo Electrónico">
-    <input type="password" id="nuevaContrasena" placeholder="Nueva Contraseña">
-    <input type="password" id="confirmarContrasena" placeholder="Confirmar Contraseña">
-    <button onclick="crearCuenta()">Registrar</button>
-    <p><a href="iniciar_sesion.html">Ya tengo una cuenta</a></p>
+<header class="header">
+    <div class="container">
+        <div class="top-bar">
+            <a href="../index.html" class="logo">MusicStore</a>
+            <nav class="nav">
+                <a href="crear_cuenta.html">Hello, Sign in</a>
+                <a href="#">Orders</a>
+                <a href="../cart/cart.html">Cart</a>
+            </nav>
+        </div>
+        <div class="search-bar">
+            <input type="text" placeholder="Search for albums, artists..." class="search-input">
+            <button class="search-button">Search</button>
+        </div>
+    </div>
+</header>
 
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const signInLink = document.querySelector("a[href='account/account.html']");
-            if (signInLink) {
-                signInLink.href = "crear_cuenta.html";
-            }
-        });
-    </script>
+<main class="account-container">
+    <h1>Iniciar Sesión</h1>
+    <input type="email" id="correo" placeholder="Correo Electrónico">
+    <input type="password" id="contrasena" placeholder="Contraseña">
+    <button onclick="iniciarSesion()">Iniciar Sesión</button>
+    <p><a href="crear_cuenta.html">¿No tienes una cuenta? Regístrate</a></p>
+    <div class="sign-out-container">
+        <button class="sign-out-btn">Sign Out</button>
+    </div>
+</main>
+
+<footer class="footer">
+    <div class="container">
+        <p>&copy; 2024 MusicStore. All rights reserved.</p>
+    </div>
+</footer>
 </body>
 </html>
