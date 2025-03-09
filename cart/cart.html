@@ -51,6 +51,7 @@
         <button id="creditCardBtn" class="payment-btn">Pagar con Tarjeta</button>
         <button id="paypalBtn" class="payment-btn">Pagar con PayPal</button>
         <button id="cryptoBtn" class="payment-btn">Pagar con Criptomonedas</button>
+        <button id="qrBtn" class="payment-btn">Pagar con QR</button>
       </div>
 
       <button class="checkout-btn">Proceed to Checkout</button>
@@ -86,12 +87,39 @@
   </div>
 </div>
 
+<div id="qrPaymentModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeQrPaymentModal()">&times;</span>
+    <h2>Pagar con QR</h2>
+    <div id="qr-code-container" class="qr-code-container">
+      <img src="https://api.qrserver.com/v1/create-qr-code/?data=Ejemplo%20de%20pago%20con%20QR&size=200x200" alt="Código QR" />
+    </div>
+    <div class="input-group">
+      <label for="businessName">Razón Social:</label>
+      <input type="text" id="businessName" placeholder="Ingresa la razón social" required>
+    </div>
+    <div class="input-group">
+      <label for="nit">NIT:</label>
+      <input type="text" id="nit" placeholder="Ingresa el NIT" required>
+    </div>
+    <button id="confirmPaymentBtn" class="btn">Realizar Pago</button>
+  </div>
+</div>
+
 <footer class="footer">
   <div class="container">
-    <p>&copy; 2024 MusicStore. All rights reserved.</p>
+    <p>&copy; 2025 Hi-5 MusicStore. Todos los derechos reservados.</p>
   </div>
 </footer>
 
 <script src="../scripts/cart.js"></script>
+<script src="../scripts/qr.js"></script> <!-- Asegúrate de incluir tu script de QR aquí -->
+<script>
+  document.getElementById('qrBtn').addEventListener('click', () => {
+      const total = parseFloat(document.getElementById('total').innerText.replace('$', ''));
+      generateQRCode(total); // Llama a la función para generar el código QR
+      document.getElementById('qr-code-container').style.display = 'block'; // Muestra el contenedor del QR
+  });
+</script>
 </body>
 </html>

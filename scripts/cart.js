@@ -21,12 +21,10 @@ function loadCart() {
                 <button class="remove-btn" onclick="removeFromCart(${item.id})">Remove</button>
             `;
             cartItemsContainer.appendChild(cartItem);
-
             subtotal += item.price * item.quantity;
         });
 
         const tax = subtotal * 0.1;
-
         const shipping = 5.99;
         const total = subtotal + tax + shipping;
 
@@ -39,11 +37,8 @@ function loadCart() {
 
 function removeFromCart(productId) {
     let cart = JSON.parse(localStorage.getItem('cart')) || [];
-
     cart = cart.filter((item) => item.id !== productId);
-
     localStorage.setItem('cart', JSON.stringify(cart));
-
     loadCart();
 }
 
@@ -113,3 +108,41 @@ document.getElementById('creditCardBtn').addEventListener('click', () => {
 });
 
 document.addEventListener('DOMContentLoaded', loadCart);
+
+function openQrPaymentModal() {
+    const modal = document.getElementById('qrPaymentModal');
+    modal.style.display = 'block';
+}
+
+function closeQrPaymentModal() {
+    const modal = document.getElementById('qrPaymentModal');
+    modal.style.display = 'none';
+}
+
+function generateQRCode(amount) {
+    const qrData = {
+        amount: amount,
+        merchantId: 'your-merchant-id'
+    };
+    const qrCode = new Qr();
+    qrCode.makeCode(JSON.stringify(qrData));
+    document.getElementById('qr-code-container').innerHTML = qrCode.createImgTag();
+}
+document.getElementById('qrBtn').addEventListener('click', () => {
+    const total = parseFloat(document.getElementById('total').innerText.replace('$', ''));
+    openQrPaymentModal();
+    generateQRCode(total);
+});
+
+document.getElementById('confirmPaymentBtn').addEventListener('click', () => {
+    const businessName = document.getElementById('businessName').value;
+    const nit = document.getElementById('nit').value;
+
+    if (businessName && nit) {
+        alert("Pago realizado con éxito. Regresando a la página del carrito.");
+        localStorage.removeItem('cart');
+        window.location.href = 'cart.html';
+    } else {
+        alert("Por favor, completa todos los campos.");
+    }
+});
