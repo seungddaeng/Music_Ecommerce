@@ -124,4 +124,92 @@ document.getElementById('qrBtn').addEventListener('click', () => {
     processPayment(new Qr(), total);
 });
 
+// Función para abrir el modal
+document.addEventListener('DOMContentLoaded', () => {
+    // Agregar eventos para los botones
+    document.getElementById('cryptoBtn').addEventListener('click', abrirModalPago);
+    document.getElementById('selectBitcoinBtn').addEventListener('click', () => seleccionarCripto('bitcoin'));
+    document.getElementById('selectEthereumBtn').addEventListener('click', () => seleccionarCripto('ethereum'));
+
+    // Agregar el evento para cerrar el modal
+    const closeButton = document.querySelector('#cryptoPaymentModal .close');
+    if (closeButton) {
+        closeButton.addEventListener('click', cerrarModalPago);
+    } else {
+        console.error('No se encontró el botón de cerrar modal.');
+    }
+    const closePriceModalButton = document.querySelector('#cryptoPriceModal .close');
+    if (closePriceModalButton) {
+        closePriceModalButton.addEventListener('click', cerrarModalCryptoPrice);
+    } else {
+        console.error('No se encontró el botón de cerrar modal de precio con criptomonedas.');
+    }
+});
+
+// Función para abrir el modal
+function abrirModalPago() {
+    const modal = document.getElementById('cryptoPaymentModal');
+    if (modal) {
+        modal.style.display = 'block';  // Mostrar el modal
+    } else {
+        console.error("No se encontró el modal de pago con criptomonedas.");
+    }
+}
+
+// Función para cerrar el modal
+function cerrarModalPago() {
+    const modal = document.getElementById('cryptoPaymentModal');
+    if (modal) {
+        modal.style.display = 'none';  // Ocultar el modal
+    } else {
+        console.error("No se encontró el modal de pago con criptomonedas.");
+    }
+}
+
+// Función para manejar la selección de criptomoneda (Bitcoin o Ethereum)
+async function seleccionarCripto(moneda) {
+    // Crear instancia de Crypto (la estrategia de pago)
+    const crypto = new Crypto();
+
+    // Obtener el precio de la criptomoneda seleccionada
+    const precioCrypto = await crypto.obtenerPrecios();
+
+    // Obtener el total en USD (esto lo ajustas según tu lógica de total)
+    const totalUSD = parseFloat(document.getElementById('total').innerText.replace('$', ''));
+    const totalCripto = (totalUSD / precioCrypto[moneda].usd).toFixed(6);  // Convertir el total en USD a la criptomoneda seleccionada
+
+    // Mostrar el precio de la criptomoneda seleccionada en el nuevo modal
+    const cryptoPriceElement = document.getElementById('cryptoPrice');
+    if (cryptoPriceElement) {
+        cryptoPriceElement.innerText = `Total a pagar: ${totalCripto} ${moneda.toUpperCase()}`;
+    } else {
+        console.error('No se encontró el elemento de cryptoPrice');
+    }
+
+    // Abrir el nuevo modal para mostrar el precio y el campo de la billetera
+    const cryptoPriceModal = document.getElementById('cryptoPriceModal');
+    if (cryptoPriceModal) {
+        cryptoPriceModal.style.display = 'block';
+    } else {
+        console.error('No se encontró el modal de cryptoPriceModal');
+    }
+}
+
+// Función para cerrar el nuevo modal de cryptoPrice
+function cerrarModalCryptoPrice() {
+    const cryptoPriceModal = document.getElementById('cryptoPriceModal');
+    if (cryptoPriceModal) {
+        cryptoPriceModal.style.display = 'none';  // Ocultar el modal
+    } else {
+        console.error('No se encontró el modal de cryptoPriceModal');
+    }
+}
+
+
+
+
+
+
+
+
 document.addEventListener('DOMContentLoaded', loadCart);

@@ -183,36 +183,79 @@ form button:hover {
 }
 
 
-/*.modal-content h2 {*/
-/*  margin-top: 0;*/
-/*}*/
+.modal-content h2 {
+  margin-top: 0;
+}
 
-/*.modal-content p {*/
-/*  font-size: 18px;*/
-/*  font-weight: bold;*/
-/*  margin-bottom: 20px;*/
-/*}*/
+.modal-content p {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
 
-/*.modal-content button {*/
-/*  background-color: #aa80ff;*/
-/*  color: white;*/
-/*  border: none;*/
-/*  padding: 10px 20px;*/
-/*  border-radius: 5px;*/
-/*  cursor: pointer;*/
-/*  font-size: 16px;*/
-/*  margin: 5px;*/
-/*}*/
+.modal-content button {
+  background-color: #aa80ff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  margin: 5px;
+}
 
-/*.modal-content button:hover {*/
-/*  background-color: #aa80ff;*/
-/*}*/
+.modal-content button:hover {
+  background-color: #aa80ff;
+}
 
-/*.close {*/
-/*  position: absolute;*/
-/*  top: 10px;*/
-/*  right: 15px;*/
-/*  font-size: 20px;*/
-/*  cursor: pointer;*/
-/*}*/
+.close {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.modal-content {
+  background-color: #fff; /* Fondo blanco */
+  padding: 20px; /* Espaciado interno */
+  border-radius: 10px; /* Bordes redondeados */
+  width: 80%; /* Ajusta el tamaño del modal según el contenido */
+  max-width: 500px; /* Ancho máximo para no hacerlo muy grande */
+  box-sizing: border-box; /* Para incluir padding y borders en el tamaño total */
+  overflow: auto; /* Para que el contenido no se desborde si es más grande */
+}
+
+/* Estilo para los botones de cerrar */
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* Estilo para el campo de clave de billetera */
+.input-group {
+  margin-top: 10px;
+}
+
+.input-group input {
+  padding: 10px;
+  width: 90%;
+  margin-top: 5px;
+}
+
+.crypto-price {
+  font-size: 18px;
+  margin-top: 20px;
+}
+
+
 

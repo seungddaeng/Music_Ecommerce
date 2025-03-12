@@ -1,35 +1,42 @@
-//import Payment from "./Payment";
-import { PaymentStrategy } from "/payment/PaymentStrategy.js";
+import { PaymentStrategy } from "./PaymentStrategy.js";
 
 export class Crypto extends PaymentStrategy {
-    pay(amount) {
-        console.log(`Pagando $${amount} con Criptomonedas.`);
+    async pay(amount, cryptoType) {
+        try {
+            console.log(`Obteniendo precios de ${cryptoType}...`);
+            const precios = await this.obtenerPrecios();
+
+            if (!precios[cryptoType]) {
+                throw new Error("Criptomoneda no válida.");
+            }
+
+            // Convertir el monto en USD a la criptomoneda seleccionada
+            const cryptoAmount = amount / precios[cryptoType].usd;
+            console.log(`Monto en USD: $${amount} equivale a ${cryptoAmount.toFixed(6)} ${cryptoType.toUpperCase()}`);
+
+            // Simulando la verificación de saldo del usuario (esto lo implementas según tu base de datos o backend)
+            const saldoUsuario = 1; // Aquí deberías obtener el saldo real de la base de datos del usuario en esa criptomoneda
+            if (saldoUsuario >= cryptoAmount) {
+                console.log(`Pago exitoso: ${cryptoAmount.toFixed(6)} ${cryptoType.toUpperCase()} descontados.`);
+                return true;
+            } else {
+                console.log("Saldo insuficiente para realizar la transacción.");
+                return false;
+            }
+        } catch (error) {
+            console.error("Error al procesar el pago:", error);
+            return false;
+        }
+    }
+
+    async obtenerPrecios() {
+        const url = "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum&vs_currencies=usd";
+        try {
+            const respuesta = await fetch(url);
+            return await respuesta.json();
+        } catch (error) {
+            console.error("Error al obtener los precios:", error);
+            throw error;
+        }
     }
 }
-//
-//     // Método principal para realizar el pago
-//     async pay(amount) {
-//         try {
-//
-//
-//         } catch (error) {
-//             console.error('Error al procesar el pago:', error);
-//             return false; // Si hay error, consideramos la transacción fallida
-//         }
-//     }
-//
-//     // Obtener los precios de Bitcoin y Ethereum
-//     async obtenerPrecios() {
-//         const url = 'https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum&vs_currencies=usd';
-//         try {
-//             const respuesta = await fetch(url);
-//             return await respuesta.json();
-//         } catch (error) {
-//             console.error('Error al obtener los precios:', error);
-//             throw error; // Si no se obtienen los precios, lanzar error
-//         }
-//     }
-//
-// }
-//
-// export default Crypto;

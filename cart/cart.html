@@ -107,16 +107,34 @@
   </div>
 </div>
 
-<!--&lt;!&ndash; Modal para seleccionar criptomoneda &ndash;&gt;-->
-<!--<div id="cryptoPaymentModal" class="modal">-->
-<!--  <div class="modal-content">-->
-<!--    <span class="close" onclick="cerrarModalPago()">&times;</span>-->
-<!--    <h2>Selecciona una Criptomoneda</h2>-->
-<!--    <button id="selectBitcoinBtn" onclick="seleccionarCripto('bitcoin')">Pagar con Bitcoin</button>-->
-<!--    <button id="selectEthereumBtn" onclick="seleccionarCripto('ethereum')">Pagar con Ethereum</button>-->
-<!--    <button id="changeCurrencyBtn" style="display:none;" onclick="volverSeleccionMoneda()">Cambiar Moneda</button>-->
-<!--  </div>-->
-<!--</div>-->
+<!-- Modal para seleccionar criptomoneda -->
+<div id="cryptoPaymentModal" class="modal">
+  <div class="modal-content">
+    <span class="close" >&times;</span>
+    <h2>Selecciona una Criptomoneda</h2>
+    <button id="selectBitcoinBtn" >Pagar con Bitcoin</button>
+    <button id="selectEthereumBtn" >Pagar con Ethereum</button>
+  </div>
+</div>
+
+<!-- Modal para mostrar el precio de la criptomoneda y la clave de billetera -->
+<div id="cryptoPriceModal" class="modal">
+  <div class="modal-content">
+    <span class="close" >&times;</span>
+    <h2>Detalles del Pago con Criptomoneda</h2>
+    <div id="cryptoPrice" class="crypto-price">
+      <!-- Aquí se mostrará el precio convertido de USD a la criptomoneda -->
+    </div>
+
+    <div class="input-group">
+      <label for="walletKey">Clave de Billetera:</label>
+      <input type="text" id="walletKey" placeholder="Ingresa tu clave de billetera" required>
+    </div>
+
+    <button id="confirmCryptoPaymentBtn" class="btn">Confirmar Pago</button>
+  </div>
+</div>
+
 
 
 <footer class="footer">
