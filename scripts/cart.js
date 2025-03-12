@@ -1,3 +1,6 @@
+import { PaymentContext } from "../payment/PaymentContext.js";
+import { Crypto } from "../payment/Crypto.js";
+
 function loadCart() {
     const cart = JSON.parse(localStorage.getItem('cart')) || [];
     const cartItemsContainer = document.getElementById('cart-items-container');
@@ -150,3 +153,49 @@ document.getElementById('confirmPaymentBtn').addEventListener('click', () => {
         alert("Por favor, completa todos los campos.");
     }
 });
+//
+//
+// // cart.js
+// document.getElementById('cryptoBtn').addEventListener('click', () => {
+//     abrirModalPago();
+// });
+//
+// // Función para seleccionar la criptomoneda (Bitcoin o Ethereum)
+// async function seleccionarCripto(moneda) {
+//     const paymentAdapter = new PaymentAdapter(new Crypto());
+//
+//     // Obtener los precios actuales de las criptomonedas
+//     const precios = await crypto.obtenerPrecios();
+//     const totalUSD = parseFloat(document.getElementById('total').innerText.replace('$', ''));  // Obtener el total en USD
+//     //const precioCripto = moneda === 'bitcoin' ? precios.bitcoin : precios.ethereum;  // Seleccionar el precio adecuado de la criptomoneda
+//     //const totalCripto = (totalUSD / precioCripto).toFixed(6);  // Convertir el total de USD a la criptomoneda seleccionada
+//
+// }
+//
+// // Función para mostrar el modal de pago con criptomonedas
+// function abrirModalPago() {
+//     const modal = document.getElementById('cryptoPaymentModal');
+//     if (modal) {
+//         modal.style.display = 'block';
+//     } else {
+//         console.error("No se encontró el modal de pago con criptomonedas.");
+//     }
+// }
+//
+// // Función para cerrar el modal de pago con criptomonedas
+// function cerrarModalPago() {
+//     const modal = document.getElementById('cryptoPaymentModal');
+//     if (modal) {
+//         modal.style.display = 'none';
+//     } else {
+//         console.error("No se encontró el modal de pago con criptomonedas.");
+//     }
+// }
+
+const paymentContext = new PaymentContext();
+paymentContext.setStrategy(new Crypto());
+paymentContext.executePayment(100);
+
+
+
+
