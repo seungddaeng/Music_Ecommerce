@@ -4,7 +4,8 @@
 //    password: '',
 //    database: 'musicecommerce',
 //  };
-const mysql = require('mysql');
+// const mysql = require('mysql');
+import mysql from 'mysql';
 
 const connection = mysql.createConnection({
     host: 'localhost',
@@ -22,4 +23,5 @@ connection.connect((err) => {
     console.log('Conectado a la base de datos MySQL 🎉');
 });
 
-module.exports = connection;
+// module.exports = connection;
+export default connection;

@@ -1,4 +1,8 @@
 export class PaymentContext {
+    constructor(strategy) {
+        this.strategy = strategy;
+    }
+
     setStrategy(strategy) {
         this.strategy = strategy;
     }
@@ -7,6 +11,6 @@ export class PaymentContext {
         if (!this.strategy) {
             throw new Error("No se ha definido una estrategia de pago.");
         }
-        this.strategy.pay(amount);
+        return this.strategy.pay(amount);
     }
 }

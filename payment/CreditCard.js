@@ -1,7 +1,6 @@
-import Payment from './Payment.js';
-import db from '../scripts/dbConfig.js';
+import { PaymentStrategy } from './PaymentStrategy.js';
 
-class CreditCard extends Payment {
+export class CreditCard extends PaymentStrategy {
     async pay(amount) {
         console.log(`Procesando pago de $${amount} con tarjeta de crédito...`);
 
@@ -47,19 +46,17 @@ class CreditCard extends Payment {
             return false;
         }
 
-        const sql = `
-            SELECT * FROM credit_cards
-            WHERE card_number = ? AND card_name = ? AND expiry_date = ? AND cvv = ?
-        `;
-        const params = [cardNumber, cardName, expiryDate, cvv];
-
         try {
-            const results = await db.query(sql, params);
-            if (results.length === 0) {
-                alert("Tarjeta no encontrada. Verifique los datos.");
+            const response = await fetch('/validateCreditCard', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ cardNumber, cardName, expiryDate, cvv }),
+            });
+            const data = await response.json();
+            if (!data.success) {
+                alert(data.error || "Tarjeta no encontrada. Verifique los datos.");
                 return false;
             }
-
             return true;
         } catch (error) {
             console.error("Error al validar la tarjeta:", error);
@@ -70,23 +67,18 @@ class CreditCard extends Payment {
     async checkBalance(amount) {
         const cardNumber = document.getElementById('cardNumber').value;
 
-        const sql = `SELECT balance FROM credit_cards WHERE card_number = ?`;
-        const params = [cardNumber];
-
         try {
-            const results = await db.query(sql, params);
-            if (results.length === 0) {
-                alert("Tarjeta no encontrada.");
+            const response = await fetch('/checkBalance', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ cardNumber, amount }),
+            });
+            const data = await response.json();
+            if (!data.success) {
+                alert(data.error || "Error al verificar el saldo.");
                 return false;
             }
-
-            const balance = parseFloat(results[0].balance);
-            if (balance < amount) {
-                alert("Saldo insuficiente.");
-                return false;
-            }
-
-            return true; // Saldo suficiente
+            return true;
         } catch (error) {
             console.error("Error al verificar el saldo:", error);
             return false;
@@ -96,11 +88,17 @@ class CreditCard extends Payment {
     async processPayment(amount) {
         const cardNumber = document.getElementById('cardNumber').value;
 
-        const sql = `UPDATE credit_cards SET balance = balance - ? WHERE card_number = ?`;
-        const params = [amount, cardNumber];
-
         try {
-            await db.query(sql, params);
+            const response = await fetch('/processPayment', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ cardNumber, amount }),
+            });
+            const data = await response.json();
+            if (!data.success) {
+                alert("Error al procesar el pago.");
+                return false;
+            }
             console.log(`Pago exitoso: $${amount} descontados.`);
             return true;
         } catch (error) {
@@ -109,5 +107,3 @@ class CreditCard extends Payment {
         }
     }
 }
-
-export default CreditCard;

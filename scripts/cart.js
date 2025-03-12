@@ -1,5 +1,8 @@
 import { PaymentContext } from "../payment/PaymentContext.js";
+import { CreditCard } from "../payment/CreditCard.js";
+//import { PayPal } from "../payment/PayPal.js";
 import { Crypto } from "../payment/Crypto.js";
+//import { Qr } from "../payment/Qr.js";
 
 function loadCart() {
     const cart = JSON.parse(localStorage.getItem('cart')) || [];
@@ -59,6 +62,9 @@ function closePaymentModal() {
     modal.style.display = 'none';
 }
 
+window.closePaymentModal = closePaymentModal;
+
+
 function validateCreditCard(cardNumber, expiryDate, cvv) {
     if (!cardNumber || cardNumber.length !== 16 || !/^\d+$/.test(cardNumber)) {
         alert("Número de tarjeta inválido. Debe tener 16 dígitos.");
@@ -79,123 +85,43 @@ function validateCreditCard(cardNumber, expiryDate, cvv) {
     return true;
 }
 
-function processCreditCardPayment(total) {
-    const cardNumber = document.getElementById('cardNumber').value;
-    const cardName = document.getElementById('cardName').value;
-    const expiryDate = document.getElementById('expiryDate').value;
-    const cvv = document.getElementById('cvv').value;
-
-    if (!validateCreditCard(cardNumber, expiryDate, cvv)) {
-        return false;
-    }
-
-    const paymentAdapter = new PaymentAdapter(new CreditCard());
-    const paymentSuccess = paymentAdapter.pay(total);
+async function processPayment(paymentMethod, amount) {
+    const paymentContext = new PaymentContext(paymentMethod);
+    const paymentSuccess = await paymentContext.executePayment(amount);
 
     if (paymentSuccess) {
-        alert(`Pago exitoso: $${total} pagados con tarjeta de crédito.`);
+        alert(`Pago exitoso: $${amount} pagados con ${paymentMethod.constructor.name}.`);
         localStorage.removeItem('cart');
         loadCart();
         closePaymentModal();
-        return true;
     } else {
         alert("Error en el pago. Inténtalo de nuevo.");
-        return false;
     }
 }
 
 document.getElementById('creditCardForm').addEventListener('submit', (event) => {
     event.preventDefault();
     const total = parseFloat(document.getElementById('total').innerText.replace('$', ''));
-    processCreditCardPayment(total);
+    processPayment(new CreditCard(), total);
 });
 
 document.getElementById('creditCardBtn').addEventListener('click', () => {
     openPaymentModal();
 });
 
-document.addEventListener('DOMContentLoaded', loadCart);
+document.getElementById('paypalBtn').addEventListener('click', () => {
+    const total = parseFloat(document.getElementById('total').innerText.replace('$', ''));
+    processPayment(new PayPal(), total);
+});
 
-function openQrPaymentModal() {
-    const modal = document.getElementById('qrPaymentModal');
-    modal.style.display = 'block';
-}
+document.getElementById('cryptoBtn').addEventListener('click', () => {
+    const total = parseFloat(document.getElementById('total').innerText.replace('$', ''));
+    processPayment(new Crypto(), total);
+});
 
-function closeQrPaymentModal() {
-    const modal = document.getElementById('qrPaymentModal');
-    modal.style.display = 'none';
-}
-
-function generateQRCode(amount) {
-    const qrData = {
-        amount: amount,
-        merchantId: 'your-merchant-id'
-    };
-    const qrCode = new Qr();
-    qrCode.makeCode(JSON.stringify(qrData));
-    document.getElementById('qr-code-container').innerHTML = qrCode.createImgTag();
-}
 document.getElementById('qrBtn').addEventListener('click', () => {
     const total = parseFloat(document.getElementById('total').innerText.replace('$', ''));
-    openQrPaymentModal();
-    generateQRCode(total);
+    processPayment(new Qr(), total);
 });
 
-document.getElementById('confirmPaymentBtn').addEventListener('click', () => {
-    const businessName = document.getElementById('businessName').value;
-    const nit = document.getElementById('nit').value;
-
-    if (businessName && nit) {
-        alert("Pago realizado con éxito. Regresando a la página del carrito.");
-        localStorage.removeItem('cart');
-        window.location.href = 'cart.html';
-    } else {
-        alert("Por favor, completa todos los campos.");
-    }
-});
-//
-//
-// // cart.js
-// document.getElementById('cryptoBtn').addEventListener('click', () => {
-//     abrirModalPago();
-// });
-//
-// // Función para seleccionar la criptomoneda (Bitcoin o Ethereum)
-// async function seleccionarCripto(moneda) {
-//     const paymentAdapter = new PaymentAdapter(new Crypto());
-//
-//     // Obtener los precios actuales de las criptomonedas
-//     const precios = await crypto.obtenerPrecios();
-//     const totalUSD = parseFloat(document.getElementById('total').innerText.replace('$', ''));  // Obtener el total en USD
-//     //const precioCripto = moneda === 'bitcoin' ? precios.bitcoin : precios.ethereum;  // Seleccionar el precio adecuado de la criptomoneda
-//     //const totalCripto = (totalUSD / precioCripto).toFixed(6);  // Convertir el total de USD a la criptomoneda seleccionada
-//
-// }
-//
-// // Función para mostrar el modal de pago con criptomonedas
-// function abrirModalPago() {
-//     const modal = document.getElementById('cryptoPaymentModal');
-//     if (modal) {
-//         modal.style.display = 'block';
-//     } else {
-//         console.error("No se encontró el modal de pago con criptomonedas.");
-//     }
-// }
-//
-// // Función para cerrar el modal de pago con criptomonedas
-// function cerrarModalPago() {
-//     const modal = document.getElementById('cryptoPaymentModal');
-//     if (modal) {
-//         modal.style.display = 'none';
-//     } else {
-//         console.error("No se encontró el modal de pago con criptomonedas.");
-//     }
-// }
-
-const paymentContext = new PaymentContext();
-paymentContext.setStrategy(new Crypto());
-paymentContext.executePayment(100);
-
-
-
-
+document.addEventListener('DOMContentLoaded', loadCart);

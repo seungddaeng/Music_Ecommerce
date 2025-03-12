@@ -6,6 +6,7 @@
   <title>Shopping Cart - MusicStore</title>
   <link rel="stylesheet" href="../styles.css">
   <link rel="stylesheet" href="cart.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 </head>
 <body>
 <header class="header">
@@ -76,11 +77,11 @@
       <label for="cvv">Código de Seguridad (CVV):</label>
       <input type="text" id="cvv" placeholder="123" required>
 
-      <div class="card-icons">
-        <img src="assets/images/visa.png" alt="Visa">
-        <img src="assets/images/mastercard.png" alt="MasterCard">
-        <img src="assets/images/amex.png" alt="AMEX">
-      </div>
+<!--      <div class="card-icons">-->
+<!--        <img src="assets/images/visa.png" alt="Visa">-->
+<!--        <img src="assets/images/mastercard.png" alt="MasterCard">-->
+<!--        <img src="assets/images/amex.png" alt="AMEX">-->
+<!--      </div>-->
 
       <button type="submit">Pagar</button>
     </form>
@@ -125,13 +126,12 @@
 </footer>
 
 <script type="module" src="../scripts/cart.js"></script>
-<script src="../scripts/cart.js"></script>
-<script src="../scripts/qr.js"></script> <!-- Asegúrate de incluir tu script de QR aquí -->
+
 <script>
   document.getElementById('qrBtn').addEventListener('click', () => {
-      const total = parseFloat(document.getElementById('total').innerText.replace('$', ''));
-      generateQRCode(total); // Llama a la función para generar el código QR
-      document.getElementById('qr-code-container').style.display = 'block'; // Muestra el contenedor del QR
+    const total = parseFloat(document.getElementById('total').innerText.replace('$', ''));
+    generateQRCode(total); // Llama a la función para generar el código QR
+    document.getElementById('qr-code-container').style.display = 'block'; // Muestra el contenedor del QR
   });
 </script>
 </body>
