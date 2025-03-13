@@ -76,11 +76,6 @@
       <label for="cvv">Código de Seguridad (CVV):</label>
       <input type="text" id="cvv" placeholder="123" required>
 
-<!--      <div class="card-icons">-->
-<!--        <img src="assets/images/visa.png" alt="Visa">-->
-<!--        <img src="assets/images/mastercard.png" alt="MasterCard">-->
-<!--        <img src="assets/images/amex.png" alt="AMEX">-->
-<!--      </div>-->
 
       <button type="submit">Pagar</button>
     </form>
@@ -106,7 +101,7 @@
   </div>
 </div>
 
-<!-- Modal para seleccionar criptomoneda -->
+
 <div id="cryptoPaymentModal" class="modal">
   <div class="modal-content">
     <span class="close" >&times;</span>
@@ -116,13 +111,11 @@
   </div>
 </div>
 
-<!-- Modal para mostrar el precio de la criptomoneda y la clave de billetera -->
 <div id="cryptoPriceModal" class="modal">
   <div class="modal-content">
     <span class="close" >&times;</span>
     <h2>Detalles del Pago con Criptomoneda</h2>
     <div id="cryptoPrice" class="crypto-price">
-      <!-- Aquí se mostrará el precio convertido de USD a la criptomoneda -->
     </div>
 
     <div class="input-group">
@@ -168,10 +161,16 @@
   }
 
   function linkPaypalAccount() {
+    const carrito = JSON.parse(localStorage.getItem('cart')) || [];
+
+if (carrito.length === 0) {
+    alert("El carrito está vacío. Agrega productos antes de proceder al pago.");
+    return;
+}
+
     alert("Compra exitosa. Cuenta vinculada correctamente.");
     localStorage.removeItem('cart');
 
-    // Poner el total en 0
     const subtotalElement = document.getElementById('subtotal');
     const taxElement = document.getElementById('tax');
     const shippingElement = document.getElementById('shipping');
@@ -182,12 +181,10 @@
     shippingElement.innerText = '$0.00';
     totalElement.innerText = '$0.00';
 
-    // Volver al inicio (puedes cambiar la URL a la que desees redirigir)
     window.location.href = '/index.html';
     closePaypalModal(); 
   }
 
-  // Función para mostrar el modal de PayPal cuando se haga clic en el botón "Pagar con PayPal"
   function showPaypalModal() {
     document.getElementById('paypalModal').style.display = 'block';
   }
