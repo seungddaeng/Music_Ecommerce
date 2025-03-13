@@ -12,7 +12,8 @@
       const email = document.getElementById("correo").value;
       const nuevaContrasena = document.getElementById("nuevaContrasena").value;
       const confirmarContrasena = document.getElementById("confirmarContrasena").value;
-
+  
+      // Validaciones
       if (!nombreCompleto.trim()) {
         alert("El nombre completo es obligatorio");
         return;
@@ -29,17 +30,20 @@
         alert("Las contraseñas no coinciden");
         return;
       }
-
+  
+      // Hacer la solicitud AJAX
       const xhr = new XMLHttpRequest();
-      xhr.open("POST", "/registrar", true);
+      xhr.open("POST", "/registrar", true); // Aquí es donde se hace el POST al servidor
       xhr.setRequestHeader("Content-Type", "application/json");
+  
+      // Manejo de la respuesta del servidor
       xhr.onreadystatechange = function () {
         if (xhr.readyState === 4) {
           if (xhr.status === 200) {
             const response = JSON.parse(xhr.responseText);
             if (response.success) {
               alert("Registro exitoso");
-              window.location.href = "iniciar_sesion.html";
+              window.location.href = "../index.html";
             } else {
               alert("Error: " + response.error);
             }
@@ -48,6 +52,8 @@
           }
         }
       };
+  
+      // Enviar los datos al backend
       xhr.send(JSON.stringify({
         nombreCompleto: nombreCompleto,
         email: email,
@@ -55,6 +61,7 @@
       }));
     }
   </script>
+  
 </head>
 <body>
 <header class="header">

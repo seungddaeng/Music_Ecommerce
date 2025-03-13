@@ -4,6 +4,7 @@ const path = require('path');
 const cors = require('cors');
 const app = express();
 const port = 3000;
+const bcrypt = require('bcrypt'); 
 
 // Configuración de la conexión a la base de datos
 const db = mysql.createConnection({
@@ -24,7 +25,7 @@ db.connect((err) => {
 
 // Middleware para parsear el cuerpo de las solicitudes JSON
 app.use(express.json());
-
+app.use(express.urlencoded({ extended: true }));
 app.use('/payment', express.static(path.join(__dirname, 'payment')));
 
 
@@ -52,6 +53,51 @@ app.get('/products', (req, res) => {
     }
   });
 });
+// Obtener usuario por ID
+app.get('/user/:id', (req, res) => {
+  const userId = req.params.id;
+  
+  const sql = 'SELECT * FROM users WHERE id = ?';
+  db.query(sql, [userId], (err, results) => {
+    if (err) {
+      console.error('Error fetching user:', err);
+      res.status(500).json({ error: 'Error fetching user' });
+    } else if (results.length === 0) {
+      res.status(404).json({ error: 'User not found' });
+    } else {
+      res.json(results[0]);
+    }
+  });
+});
+// Registrar un nuevo usuario
+// Ruta para registrar usuario
+
+app.post("/registrar", (req, res) => {
+  const { nombreCompleto, email, nuevaContrasena } = req.body;
+
+  if (!nombreCompleto || !email || !nuevaContrasena) {
+      return res.status(400).json({ success: false, error: "Todos los campos son obligatorios" });
+  }
+
+  // Encriptar la contraseña antes de guardarla en la BD
+  bcrypt.hash(nuevaContrasena, 10, (err, hash) => {
+      if (err) {
+          return res.status(500).json({ success: false, error: "Error al encriptar contraseña" });
+      }
+
+      // Guardar usuario en la base de datos con contraseña encriptada
+      const sql = "INSERT INTO users (nombreCompleto, email, contrasena) VALUES (?, ?, ?)";
+      db.query(sql, [nombreCompleto, email, hash], (err, result) => {
+          if (err) {
+              console.error("Error registrando usuario:", err);
+              return res.status(500).json({ success: false, error: "Error al registrar usuario" });
+          }
+          res.status(200).json({ success: true, message: "Registro exitoso" });
+      });
+  });
+});
+
+
 
 // Validar tarjeta de crédito
 app.post('/validateCreditCard', (req, res) => {
@@ -138,7 +184,36 @@ app.listen(port, () => {
 
 
 
+app.post("/iniciarsesion", (req, res) => {
+    const { email, contrasena } = req.body;
 
+    if (!email || !contrasena) {
+        return res.status(400).json({ success: false, error: "Correo y contraseña requeridos" });
+    }
+
+    const sql = "SELECT * FROM users WHERE email = ?";
+    db.query(sql, [email], async (err, result) => {
+        if (err) {
+            console.error("Error en la consulta:", err);
+            return res.status(500).json({ success: false, error: "Error en el servidor" });
+        }
+
+        if (result.length === 0) {
+            return res.status(401).json({ success: false, error: "Correo o contraseña incorrectos" });
+        }
+
+        const user = result[0];
+
+        // Verifica la contraseña encriptada
+        const passwordMatch = await bcrypt.compare(contrasena, user.contrasena);
+
+        if (!password) {
+            return res.status(401).json({ success: false, error: "Correo o contraseña incorrectos" });
+        }
+
+        res.json({ success: true, message: "Inicio de sesión exitoso" });
+    });
+});
 
 
 // para crypto

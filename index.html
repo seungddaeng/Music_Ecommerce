@@ -12,10 +12,31 @@
       <div class="top-bar">
         <a href="index.html" class="logo">MusicStore</a>
         <nav class="nav">
-          <a href="account/account.html">Hello, Sign in</a>
-          <a href="#">Orders</a>
-          <a href="cart/cart.html">Cart</a>
-        </nav>
+          <a href="account/account.html" id="signIn">Hello, Sign in</a>
+          <a href="#" id="orders">Orders</a>
+          <a href="../cart/cart.html">Cart</a>
+          <a href="#" id="logout" style="display: none;" onclick="cerrarSesion()">Log out</a>
+      </nav>
+      
+      <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const isLoggedIn = localStorage.getItem("isLoggedIn");
+            const signInLink = document.getElementById("signIn");
+            const logoutLink = document.getElementById("logout");
+    
+            if (isLoggedIn === "true") {
+                if (signInLink) signInLink.style.display = "none"; // Ocultar "Hello, Sign in"
+                if (logoutLink) logoutLink.style.display = "inline-block"; // Mostrar "Log out"
+            }
+        });
+    
+        function cerrarSesion() {
+            localStorage.removeItem("isLoggedIn"); // Eliminar el estado de sesión
+            window.location.href = "index.html"; // Recargar la página para actualizar la navegación
+        }
+    </script>
+    
+      
       </div>
       <div class="search-bar">
         <input type="text" id="search-input" placeholder="Search for albums, artists..." class="search-input">

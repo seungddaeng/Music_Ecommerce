@@ -21,7 +21,7 @@
             }
 
             const xhr = new XMLHttpRequest();
-            xhr.open("POST", "/iniciar_sesion", true);
+            xhr.open("POST", "/iniciarsesion", true);
             xhr.setRequestHeader("Content-Type", "application/json");
             xhr.onreadystatechange = function () {
                 if (xhr.readyState === 4) {
@@ -65,7 +65,7 @@
     <input type="email" id="correo" placeholder="Correo Electrónico">
     <input type="password" id="contrasena" placeholder="Contraseña">
     <button onclick="iniciarSesion()">Iniciar Sesión</button>
-    <p><a href="crear_cuenta.html">¿No tienes una cuenta? Regístrate</a></p>
+    <p><a href="account.html">¿No tienes una cuenta? Regístrate</a></p>
     <div class="sign-out-container">
         <button class="sign-out-btn">Sign Out</button>
     </div>
