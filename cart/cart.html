@@ -52,7 +52,7 @@
         <button id="creditCardBtn" class="payment-btn">Pagar con Tarjeta</button>
         <button id="venmoBtn" class="payment-btn">Pagar con Venmo</button>
         <button id="cryptoBtn" class="payment-btn">Pagar con Criptomonedas</button>
-        <button id="qrBtn" class="payment-btn">Pagar con QR</button>
+        
       </div>
     
     </section>
@@ -189,6 +189,16 @@ if (carrito.length === 0) {
     document.getElementById('paypalModal').style.display = 'block';
   }
 </script>
+<style>
+  .payment-btn {
+    background-color: #007BFF; /* Color de fondo */
+    color: white; /* Color del texto */
+    padding: 10px 20px; /* Relleno interno */
+    border: none; /* Sin borde */
+    cursor: pointer; /* Cambiar el cursor al pasar por encima */
+    margin-bottom: 10px; /* Espacio entre botones */
+  }
+</style>
 
 
 <button id="qrBtn" class="payment-btn">Pagar con QR</button>
