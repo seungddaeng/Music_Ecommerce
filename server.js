@@ -135,3 +135,44 @@ app.post('/checkout', (req, res) => {
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
 });
+
+
+
+
+
+
+// para crypto
+// Verificar saldo de criptomonedas
+app.post("/checkCryptoBalance", (req, res) => {
+  const { walletKey } = req.body;
+
+  // Verificar si el walletKey existe en la base de datos
+  const sql = "SELECT balance FROM wallets WHERE wallet_key = ?";
+  console.log(walletKey);
+  db.query(sql, [walletKey], (err, results) => {
+    if (err) {
+      console.error("Error checking crypto balance:", err);
+      res.status(500).json({ error: "Error checking balance" });
+    } else if (results.length === 0) {
+      res.status(400).json({ error: "Wallet no encontrada." });
+    } else {
+      res.json({ success: true, balance: results[0].balance }); // Devolver el saldo encontrado
+    }
+  });
+});
+
+
+// Procesar pago con criptomonedas
+app.post("/processCryptoPayment", (req, res) => {
+  const { walletKey, amount } = req.body;
+
+  const sql = "UPDATE wallets SET balance = balance - ? WHERE wallet_key = ? ";
+  db.query(sql, [amount, walletKey], (err, results) => {
+    if (err) {
+      console.error("Error processing crypto payment:", err);
+      res.status(500).json({ error: "Error processing payment" });
+    } else {
+      res.json({ success: true });
+    }
+  });
+});

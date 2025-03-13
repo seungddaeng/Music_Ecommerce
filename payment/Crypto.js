@@ -1,28 +1,24 @@
-import { PaymentStrategy } from "./PaymentStrategy.js";
+import {PaymentStrategy} from "./PaymentStrategy.js";
 
 export class Crypto extends PaymentStrategy {
-    async pay(amount, cryptoType) {
-        try {
-            console.log(`Obteniendo precios de ${cryptoType}...`);
-            const precios = await this.obtenerPrecios();
 
-            if (!precios[cryptoType]) {
-                throw new Error("Criptomoneda no válida.");
-            }
+async pay(amount, cryptoType, walletKey) {
+        try {
+            const precios = await this.obtenerPrecios();
 
             // Convertir el monto en USD a la criptomoneda seleccionada
             const cryptoAmount = amount / precios[cryptoType].usd;
             console.log(`Monto en USD: $${amount} equivale a ${cryptoAmount.toFixed(6)} ${cryptoType.toUpperCase()}`);
 
-            // Simulando la verificación de saldo del usuario (esto lo implementas según tu base de datos o backend)
-            const saldoUsuario = 1; // Aquí deberías obtener el saldo real de la base de datos del usuario en esa criptomoneda
-            if (saldoUsuario >= cryptoAmount) {
-                console.log(`Pago exitoso: ${cryptoAmount.toFixed(6)} ${cryptoType.toUpperCase()} descontados.`);
-                return true;
-            } else {
+            // Verificar saldo en el backend
+            const saldoUsuario = await this.verificarSaldo(walletKey);
+            if (saldoUsuario < cryptoAmount) {
                 console.log("Saldo insuficiente para realizar la transacción.");
                 return false;
             }
+
+            // Procesar el pago
+            return await this.procesarPago(walletKey, cryptoAmount);
         } catch (error) {
             console.error("Error al procesar el pago:", error);
             return false;
@@ -37,6 +33,47 @@ export class Crypto extends PaymentStrategy {
         } catch (error) {
             console.error("Error al obtener los precios:", error);
             throw error;
+        }
+    }
+
+    async verificarSaldo(walletKey) {
+        try {
+            const response = await fetch("/checkCryptoBalance", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ walletKey }),
+            });
+            const data = await response.json();
+
+            if (!data.success) {
+                console.log(data.error || "Error al verificar saldo.");
+                return 0;
+            }
+            return parseFloat(data.balance);
+        } catch (error) {
+            console.error("Error al verificar saldo:", error);
+            return 0;
+        }
+    }
+
+    async procesarPago(walletKey, cryptoAmount) {
+        try {
+            const response = await fetch("/processCryptoPayment", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ walletKey, amount: cryptoAmount }),
+            });
+            const data = await response.json();
+
+            if (!data.success) {
+                console.log("Error al procesar el pago.");
+                return false;
+            }
+            console.log(`Pago exitoso: ${cryptoAmount.toFixed(6)} descontados.`);
+            return true;
+        } catch (error) {
+            console.error("Error al procesar el pago:", error);
+            return false;
         }
     }
 }
