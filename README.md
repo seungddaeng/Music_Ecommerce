@@ -30,4 +30,30 @@ MusicStore es un proyecto de ecommerce especializado en la venta de álbumes de 
    - Se incluyen scripts para la conexión y consultas a la base de datos.
 
 ## Instalación y Configuración
+1. **Clonar el Repositorio**
+   ```bash
+   git clone https://github.com/tuusuario/musicstore.git
+   cd musicstore
+2. ** Instalar Dependencias
+npm install
+
+3. ** Configurar la Base de Datos
+Crear una base de datos MySQL llamada musicecommerce.
+Importar el archivo SQL proporcionado en la carpeta database/ para crear las tablas necesarias.
+
+4. ** Iniciar el Servidor
+node server.js
+
+5. ** Acceder al Proyecto
+Abre tu navegador y visita http://localhost:3000.
+
+## Tecnologías Utilizadas
+
+- **Frontend**: HTML, CSS, JavaScript
+- **Backend**: Node.js, Express.js
+- **Base de Datos**: MySQL
+- **Métodos de Pago**: Tarjeta de Crédito, Criptomonedas, Venmo, PayPal, QR
+
+Gracias por explorar **MusicStore** !!
+
 
