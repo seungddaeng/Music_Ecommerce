@@ -54,8 +54,7 @@
         <button id="cryptoBtn" class="payment-btn">Pagar con Criptomonedas</button>
         <button id="qrBtn" class="payment-btn">Pagar con QR</button>
       </div>
-
-      <button class="checkout-btn">Proceed to Checkout</button>
+    
     </section>
   </div>
 </main>
@@ -150,10 +149,9 @@
   </div>
 </div>
 
-<!-- Botón de pago de PayPal -->
+
 <button id="paypalBtn" class="payment-btn" onclick="showPaypalModal()">Pagar con PayPal</button>
 
-<!-- Modal de PayPal -->
 <div id="paypalModal" class="modal">
   <div class="modal-content">
     <span class="close" onclick="closePaypalModal()">&times;</span>
@@ -165,17 +163,28 @@
 </div>
 
 <script>
-  // Función para cerrar el modal de PayPal
   function closePaypalModal() {
     document.getElementById('paypalModal').style.display = 'none';
   }
 
-  // Función para vincular la cuenta de PayPal
   function linkPaypalAccount() {
-    // Aquí puedes agregar la lógica para vincular la cuenta, por ejemplo, realizar una llamada a la API de PayPal.
-    // Por ahora, solo mostramos un mensaje de "Compra exitosa".
     alert("Compra exitosa. Cuenta vinculada correctamente.");
-    closePaypalModal();  // Cierra el modal al vincular la cuenta
+    localStorage.removeItem('cart');
+
+    // Poner el total en 0
+    const subtotalElement = document.getElementById('subtotal');
+    const taxElement = document.getElementById('tax');
+    const shippingElement = document.getElementById('shipping');
+    const totalElement = document.getElementById('total');
+
+    subtotalElement.innerText = '$0.00';
+    taxElement.innerText = '$0.00';
+    shippingElement.innerText = '$0.00';
+    totalElement.innerText = '$0.00';
+
+    // Volver al inicio (puedes cambiar la URL a la que desees redirigir)
+    window.location.href = '/index.html';
+    closePaypalModal(); 
   }
 
   // Función para mostrar el modal de PayPal cuando se haga clic en el botón "Pagar con PayPal"
@@ -184,59 +193,8 @@
   }
 </script>
 
-<!-- Estilos CSS para el modal -->
-<style>
-  /* Estilo del modal */
-  .modal {
-    display: none; /* Oculto por defecto */
-    position: fixed;
-    z-index: 1;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0, 0, 0, 0.4);
-  }
 
-  .modal-content {
-    background-color: #fefefe;
-    margin: 15% auto;
-    padding: 20px;
-    border: 1px solid #888;
-    width: 80%;
-    max-width: 500px;
-  }
 
-  .close {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-  }
-
-  .close:hover,
-  .close:focus {
-    color: black;
-    text-decoration: none;
-    cursor: pointer;
-  }
-
-  /* Estilo del botón de PayPal */
-  .payment-btn {
-    background-color: #0070ba;
-    color: white;
-    padding: 12px 20px;
-    border: none;
-    cursor: pointer;
-    font-size: 16px;
-    border-radius: 5px;
-  }
-
-  .payment-btn:hover {
-    background-color: #005b8a;
-  }
-</style>
 
 <footer class="footer">
   <div class="container">

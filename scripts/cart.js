@@ -112,10 +112,6 @@ document.getElementById('creditCardBtn').addEventListener('click', () => {
     openPaymentModal();
 });
 
-document.getElementById('paypalBtn').addEventListener('click', () => {
-    const total = parseFloat(document.getElementById('total').innerText.replace('$', ''));
-    processPayment(new PayPal(), total);
-});
 
 // document.getElementById('cryptoBtn').addEventListener('click', () => {
 //     const total = parseFloat(document.getElementById('total').innerText.replace('$', ''));
@@ -135,6 +131,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('selectBitcoinBtn').addEventListener('click', () => seleccionarCripto('bitcoin'));
     document.getElementById('selectEthereumBtn').addEventListener('click', () => seleccionarCripto('ethereum'));
     document.getElementById('confirmCryptoPaymentBtn').addEventListener('click', procesarPagoCrypto);
+    document.getElementById('checkout-btn').addEventListener('click', procesarPagoPayPal);
     document.querySelector('#cryptoPaymentModal .close')?.addEventListener('click', cerrarModalPago);
     document.querySelector('#cryptoPriceModal .close')?.addEventListener('click', cerrarModalCryptoPrice);
 });
@@ -153,6 +150,42 @@ function cerrarModalCryptoPrice() {
     const modal = document.getElementById('cryptoPriceModal');
     modal ? (modal.style.display = 'none') : console.error("No se encontró el modal de precios de criptomonedas.");
 }
+async function procesarPagoPayPal() {
+    try {
+        // Verificar si el carrito está vacío
+        const carrito = JSON.parse(localStorage.getItem('cart')) || [];
+
+        if (carrito.length === 0) {
+            alert("El carrito está vacío. Agrega productos antes de proceder al pago.");
+            return;
+        }
+
+        const totalUSD = parseFloat(document.getElementById('total').innerText.replace('$', ''));
+        const walletKey = document.getElementById('linkPaypalButton').value.trim(); // Campo de PayPal
+
+        if (!walletKey) {
+            alert("Por favor, ingrese su cuenta de PayPal.");
+            return;
+        }
+
+        const paypal = new paypal();
+        const pagoExitoso = await paypal.pay(totalUSD, walletKey);
+
+        if (pagoExitoso) {
+            alert("¡Pago realizado con éxito con PayPal!");
+            localStorage.removeItem('cart');
+            loadCart();
+            cerrarModalPago();  // Cierra el modal de pago
+        } else {
+            alert("Error al procesar el pago con PayPal. Verifique su saldo e intente de nuevo.");
+        }
+    } catch (error) {
+        console.error("Error al procesar el pago con PayPal:", error);
+    }
+}
+
+document.addEventListener('DOMContentLoaded', loadCart);
+
 
 async function seleccionarCripto(moneda) {
     try {
