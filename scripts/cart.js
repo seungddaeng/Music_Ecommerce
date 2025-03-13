@@ -131,9 +131,9 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('selectBitcoinBtn').addEventListener('click', () => seleccionarCripto('bitcoin'));
     document.getElementById('selectEthereumBtn').addEventListener('click', () => seleccionarCripto('ethereum'));
     document.getElementById('confirmCryptoPaymentBtn').addEventListener('click', procesarPagoCrypto);
-    document.getElementById('checkout-btn').addEventListener('click', procesarPagoPayPal);
     document.querySelector('#cryptoPaymentModal .close')?.addEventListener('click', cerrarModalPago);
     document.querySelector('#cryptoPriceModal .close')?.addEventListener('click', cerrarModalCryptoPrice);
+    document.getElementById('checkout-btn').addEventListener('click', procesarPagoPayPal);
 });
 
 function abrirModalPago() {
