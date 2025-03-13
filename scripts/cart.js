@@ -2,6 +2,7 @@ import { PaymentContext } from "../payment/PaymentContext.js";
 import { CreditCard } from "../payment/CreditCard.js";
 //import { PayPal } from "../payment/PayPal.js";
 import { Crypto } from "../payment/Crypto.js";
+import { Qr } from "../payment/Qr.js"; // Importar la clase Qr
 //import { Qr } from "../payment/Qr.js";
 import { VenmoPayment } from "../payment/VenmoPayment.js";
 
@@ -65,8 +66,18 @@ function closePaymentModal() {
     modal.style.display = 'none';
 }
 
-window.closePaymentModal = closePaymentModal;
+function openQrPaymentModal() {
+    const modal = document.getElementById('qrPaymentModal');
+    modal.style.display = 'block';
+}
 
+function closeQrPaymentModal() {
+    const modal = document.getElementById('qrPaymentModal');
+    modal.style.display = 'none';
+}
+
+window.closePaymentModal = closePaymentModal;
+window.closeQrPaymentModal = closeQrPaymentModal;
 
 function validateCreditCard(cardNumber, expiryDate, cvv) {
     if (!cardNumber || cardNumber.length !== 16 || !/^\d+$/.test(cardNumber)) {
@@ -89,15 +100,21 @@ function validateCreditCard(cardNumber, expiryDate, cvv) {
 }
 
 async function processPayment(paymentMethod, amount) {
+    console.log("Iniciando proceso de pago...");
     const paymentContext = new PaymentContext(paymentMethod);
     const paymentSuccess = await paymentContext.executePayment(amount);
 
     if (paymentSuccess) {
+        console.log("Pago exitoso");
         alert(`Pago exitoso: $${amount} pagados con ${paymentMethod.constructor.name}.`);
         localStorage.removeItem('cart');
         loadCart();
         closePaymentModal();
+        closeQrPaymentModal();
+        window.location.href = "../index.html";
+        alert("Gracias por su compra.");
     } else {
+        console.log("Error en el pago");
         alert("Error en el pago. Inténtalo de nuevo.");
     }
 }
@@ -114,7 +131,7 @@ document.getElementById('creditCardBtn').addEventListener('click', () => {
 
 document.getElementById('paypalBtn').addEventListener('click', () => {
     const total = parseFloat(document.getElementById('total').innerText.replace('$', ''));
-    processPayment(new PayPal(), total);
+    processPayment(new Crypto(), total);
 });
 
 // document.getElementById('cryptoBtn').addEventListener('click', () => {
@@ -124,24 +141,19 @@ document.getElementById('paypalBtn').addEventListener('click', () => {
 
 document.getElementById('qrBtn').addEventListener('click', () => {
     const total = parseFloat(document.getElementById('total').innerText.replace('$', ''));
-    processPayment(new Qr(), total);
+    openQrPaymentModal();
+    generateQRCode(total);
 });
 
+function generateQRCode(amount) {
+    const qrCodeContainer = document.getElementById('qr-code-container');
+    qrCodeContainer.innerHTML = '';
 
-
-// Función para abrir los distintos botones para abrir y cerrar modales
-document.addEventListener('DOMContentLoaded', () => {
-    document.getElementById('cryptoBtn').addEventListener('click', abrirModalPago);
-    document.getElementById('selectBitcoinBtn').addEventListener('click', () => seleccionarCripto('bitcoin'));
-    document.getElementById('selectEthereumBtn').addEventListener('click', () => seleccionarCripto('ethereum'));
-    document.getElementById('confirmCryptoPaymentBtn').addEventListener('click', procesarPagoCrypto);
-    document.querySelector('#cryptoPaymentModal .close')?.addEventListener('click', cerrarModalPago);
-    document.querySelector('#cryptoPriceModal .close')?.addEventListener('click', cerrarModalCryptoPrice);
-});
-
-function abrirModalPago() {
-    const modal = document.getElementById('cryptoPaymentModal');
-    modal ? (modal.style.display = 'block') : console.error("No se encontró el modal de pago con criptomonedas.");
+    const qrCode = new QRCode(qrCodeContainer, {
+        text: `Pago de $${amount}`,
+        width: 200,
+        height: 200,
+    });
 }
 
 function cerrarModalPago() {
@@ -206,6 +218,15 @@ async function procesarPagoCrypto() {
             return;
         }
 
+// Evento para confirmar el pago con QR
+document.getElementById('confirmPaymentBtn').addEventListener('click', () => {
+    console.log("Botón confirmPaymentBtn clickeado");
+    alert("Pago procesado"); // Cambiado el mensaje
+    localStorage.removeItem('cart'); // Vaciar el carrito
+    window.location.reload();
+});
+
+// Cargar el carrito al iniciar la página
         const crypto = new Crypto();
         const pagoExitoso = await crypto.pay(totalUSD, criptoSeleccionada, walletKey);
         if (pagoExitoso) {

@@ -88,13 +88,12 @@
   </div>
 </div>
 
+<!-- cart/cart.html -->
 <div id="qrPaymentModal" class="modal">
   <div class="modal-content">
     <span class="close" onclick="closeQrPaymentModal()">&times;</span>
     <h2>Pagar con QR</h2>
-    <div id="qr-code-container" class="qr-code-container">
-      <img src="https://api.qrserver.com/v1/create-qr-code/?data=Ejemplo%20de%20pago%20con%20QR&size=200x200" alt="Código QR" />
-    </div>
+    <div id="qr-code-container" class="qr-code-container"></div>
     <div class="input-group">
       <label for="businessName">Razón Social:</label>
       <input type="text" id="businessName" placeholder="Ingresa la razón social" required>
