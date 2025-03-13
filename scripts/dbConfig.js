@@ -1,10 +1,3 @@
-//module.exports = {
-//    host: 'localhost',
-//    user: 'root',
-//    password: '',
-//    database: 'musicecommerce',
-//  };
-// const mysql = require('mysql');
 import mysql from 'mysql';
 
 const connection = mysql.createConnection({

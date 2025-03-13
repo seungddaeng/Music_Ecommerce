@@ -252,8 +252,8 @@ if (carrito.length === 0) {
 <script>
   document.getElementById('qrBtn').addEventListener('click', () => {
     const total = parseFloat(document.getElementById('total').innerText.replace('$', ''));
-    generateQRCode(total); // Llama a la función para generar el código QR
-    document.getElementById('qr-code-container').style.display = 'block'; // Muestra el contenedor del QR
+    generateQRCode(total);
+    document.getElementById('qr-code-container').style.display = 'block';
   });
 </script>
 </body>

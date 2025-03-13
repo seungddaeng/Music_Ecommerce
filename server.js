@@ -6,7 +6,6 @@ const app = express();
 const port = 3000;
 const bcrypt = require('bcrypt'); 
 
-// Configuración de la conexión a la base de datos
 const db = mysql.createConnection({
   host: 'localhost',
   user: 'root',
@@ -14,7 +13,6 @@ const db = mysql.createConnection({
   database: 'musicecommerce',
 });
 
-// Conectar a la base de datos
 db.connect((err) => {
   if (err) {
     console.error('Error connecting to MySQL:', err.stack);
@@ -23,24 +21,19 @@ db.connect((err) => {
   console.log('Connected to MySQL as id', db.threadId);
 });
 
-// Middleware para parsear el cuerpo de las solicitudes JSON
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use('/payment', express.static(path.join(__dirname, 'payment')));
 
 
-// Habilitar CORS
 app.use(cors());
 
-// Servir archivos estáticos
 app.use(express.static(path.join(__dirname)));
 
-// Ruta principal
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-// Obtener productos
 app.get('/products', (req, res) => {
   const sql = 'SELECT * FROM products_details';
   db.query(sql, (err, results) => {
@@ -53,7 +46,6 @@ app.get('/products', (req, res) => {
     }
   });
 });
-// Obtener usuario por ID
 app.get('/user/:id', (req, res) => {
   const userId = req.params.id;
   
@@ -69,8 +61,6 @@ app.get('/user/:id', (req, res) => {
     }
   });
 });
-// Registrar un nuevo usuario
-// Ruta para registrar usuario
 
 app.post("/registrar", (req, res) => {
   const { nombreCompleto, email, nuevaContrasena } = req.body;
@@ -79,13 +69,11 @@ app.post("/registrar", (req, res) => {
       return res.status(400).json({ success: false, error: "Todos los campos son obligatorios" });
   }
 
-  // Encriptar la contraseña antes de guardarla en la BD
   bcrypt.hash(nuevaContrasena, 10, (err, hash) => {
       if (err) {
           return res.status(500).json({ success: false, error: "Error al encriptar contraseña" });
       }
 
-      // Guardar usuario en la base de datos con contraseña encriptada
       const sql = "INSERT INTO users (nombreCompleto, email, contrasena) VALUES (?, ?, ?)";
       db.query(sql, [nombreCompleto, email, hash], (err, result) => {
           if (err) {
@@ -99,7 +87,6 @@ app.post("/registrar", (req, res) => {
 
 
 
-// Validar tarjeta de crédito
 app.post('/validateCreditCard', (req, res) => {
   const { cardNumber, cardName, expiryDate, cvv } = req.body;
 
@@ -121,7 +108,6 @@ app.post('/validateCreditCard', (req, res) => {
   });
 });
 
-// Verificar saldo de la tarjeta
 app.post('/checkBalance', (req, res) => {
   const { cardNumber, amount } = req.body;
 
@@ -162,7 +148,6 @@ app.post('/processPayment', (req, res) => {
   });
 });
 
-// Endpoint para checkout (puedes mantenerlo si lo necesitas)
 app.post('/checkout', (req, res) => {
   const { userId, totalAmount } = req.body;
 
@@ -177,7 +162,6 @@ app.post('/checkout', (req, res) => {
   });
 });
 
-// Iniciar el servidor
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
 });
@@ -204,7 +188,6 @@ app.post("/iniciarsesion", (req, res) => {
 
         const user = result[0];
 
-        // Verifica la contraseña encriptada
         const passwordMatch = await bcrypt.compare(contrasena, user.contrasena);
 
         if (!password) {
@@ -237,7 +220,6 @@ app.post("/checkCryptoBalance", (req, res) => {
 });
 
 
-// Procesar pago con criptomonedas
 app.post("/processCryptoPayment", (req, res) => {
   const { walletKey, amount } = req.body;
 

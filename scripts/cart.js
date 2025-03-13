@@ -1,8 +1,6 @@
 import { PaymentContext } from "../payment/PaymentContext.js";
 import { CreditCard } from "../payment/CreditCard.js";
-//import { PayPal } from "../payment/PayPal.js";
 import { Crypto } from "../payment/Crypto.js";
-//import { Qr } from "../payment/Qr.js";
 import { VenmoPayment } from "../payment/VenmoPayment.js";
 
 let criptoSeleccionada = "";
@@ -113,18 +111,12 @@ document.getElementById('creditCardBtn').addEventListener('click', () => {
 });
 
 
-// document.getElementById('cryptoBtn').addEventListener('click', () => {
-//     const total = parseFloat(document.getElementById('total').innerText.replace('$', ''));
-//     processPayment(new Crypto(), total);
-// });
-
 document.getElementById('qrBtn').addEventListener('click', () => {
     const total = parseFloat(document.getElementById('total').innerText.replace('$', ''));
     processPayment(new Qr(), total);
 });
 
 
-// Función para abrir los distintos botones para abrir y cerrar modales
 document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('cryptoBtn').addEventListener('click', abrirModalPago);
     document.getElementById('selectBitcoinBtn').addEventListener('click', () => seleccionarCripto('bitcoin'));
@@ -151,7 +143,6 @@ function cerrarModalCryptoPrice() {
 }
 async function procesarPagoPayPal() {
     try {
-        // Verificar si el carrito está vacío
         const carrito = JSON.parse(localStorage.getItem('cart')) || [];
 
         if (carrito.length === 0) {
@@ -174,7 +165,7 @@ async function procesarPagoPayPal() {
             alert("¡Pago realizado con éxito con PayPal!");
             localStorage.removeItem('cart');
             loadCart();
-            cerrarModalPago();  // Cierra el modal de pago
+            cerrarModalPago();
         } else {
             alert("Error al procesar el pago con PayPal. Verifique su saldo e intente de nuevo.");
         }
@@ -188,7 +179,6 @@ document.addEventListener('DOMContentLoaded', loadCart);
 
 async function seleccionarCripto(moneda) {
     try {
-        // Guardar la criptomoneda seleccionada
         console.log(`Seleccionaste: ${moneda}`);
         criptoSeleccionada = moneda;
 
@@ -197,7 +187,6 @@ async function seleccionarCripto(moneda) {
         // Obtener el precio de la criptomoneda seleccionada con la API
         const precioCrypto = await crypto.obtenerPrecios();
 
-        //total en USD
         const totalUSD = parseFloat(document.getElementById('total').innerText.replace('$', ''));
         const totalCripto = (totalUSD / precioCrypto[moneda].usd).toFixed(6); // Convertir el total a criptomoneda
 
@@ -209,7 +198,6 @@ async function seleccionarCripto(moneda) {
             console.error('No se encontró el elemento de cryptoPrice');
         }
 
-        // Abrir el modal de confirmación de pago con criptomonedas
         const cryptoPriceModal = document.getElementById('cryptoPriceModal');
         cryptoPriceModal ? (cryptoPriceModal.style.display = 'block') : console.error('No se encontró el modal de cryptoPriceModal');
     } catch (error) {
@@ -217,7 +205,6 @@ async function seleccionarCripto(moneda) {
     }
 }
 
-// Función para procesar el pago con criptomonedas
 async function procesarPagoCrypto() {
     try {
         // Verificar si el carrito está vacío

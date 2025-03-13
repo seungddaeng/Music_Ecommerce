@@ -33,10 +33,9 @@
   
       // Hacer la solicitud AJAX
       const xhr = new XMLHttpRequest();
-      xhr.open("POST", "/registrar", true); // Aquí es donde se hace el POST al servidor
+      xhr.open("POST", "/registrar", true);
       xhr.setRequestHeader("Content-Type", "application/json");
   
-      // Manejo de la respuesta del servidor
       xhr.onreadystatechange = function () {
         if (xhr.readyState === 4) {
           if (xhr.status === 200) {

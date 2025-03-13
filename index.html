@@ -24,14 +24,14 @@
             const logoutLink = document.getElementById("logout");
     
             if (isLoggedIn === "true") {
-                if (signInLink) signInLink.style.display = "none"; // Ocultar "Hello, Sign in"
-                if (logoutLink) logoutLink.style.display = "inline-block"; // Mostrar "Log out"
+                if (signInLink) signInLink.style.display = "none";
+                if (logoutLink) logoutLink.style.display = "inline-block";
             }
         });
     
         function cerrarSesion() {
-            localStorage.removeItem("isLoggedIn"); // Eliminar el estado de sesión
-            window.location.href = "index.html"; // Recargar la página para actualizar la navegación
+            localStorage.removeItem("isLoggedIn");
+            window.location.href = "index.html";
         }
     </script>
     
