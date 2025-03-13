@@ -29,9 +29,8 @@ function loadCart() {
                 <p>$${item.price}</p>
                 <p>Quantity: ${item.quantity}</p>
                 <button class="remove-btn" onclick="removeFromCart(${item.id})">Remove</button>
-                <button class="decrease-btn" onclick="decreaseQuantity(${item.id})">Quitar uno</button>            `;
+                <button class="decrease-btn" data-id="${item.id}">Quitar uno</button>`;
             cartItemsContainer.appendChild(cartItem);
-
             subtotal += item.price * item.quantity;
         });
 
@@ -44,6 +43,19 @@ function loadCart() {
         shippingElement.innerText = `$${shipping.toFixed(2)}`;
         totalElement.innerText = `$${total.toFixed(2)}`;
     }
+    setTimeout(() => {
+                const decreaseButtons = document.querySelectorAll('.decrease-btn');
+                if (decreaseButtons.length > 0) {
+                    decreaseButtons.forEach(button => {
+                        button.addEventListener('click', (event) => {
+                            const productId = event.target.getAttribute('data-id');
+                            decreaseQuantity(productId);
+                        });
+                    });
+                } else {
+                    console.error("❌ No se encontraron botones de 'Quitar uno'.");
+                }
+            }, 100);
 }
 
 function removeFromCart(productId) {
@@ -303,16 +315,55 @@ function closeUserModal() {
 
 window.closeUserModal = closeUserModal;
 
-document.getElementById('confirmVenmoPayment').addEventListener('click', function(event) {
-    const button = event.target;
-    button.style.animation = "sparkle 0.5s ease-out";
-
-    setTimeout(() => {
-        button.style.animation = "";
-    }, 500);
-});
+const venmoButton = document.getElementById('confirmVenmoPayment');
 
 function clearCart() {
     localStorage.removeItem('cart');
     loadCart();
 }
+
+function decreaseQuantity(productId) {
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    let item = cart.find(item => item.id == productId);
+
+    if (item && item.quantity > 1) {
+        item.quantity -= 1;
+    } else {
+        cart = cart.filter(item => item.id != productId);
+    }
+
+    localStorage.setItem('cart', JSON.stringify(cart));
+    loadCart();
+}
+
+window.decreaseQuantity = decreaseQuantity;
+
+document.addEventListener("DOMContentLoaded", () => {
+    const venmoButton = document.getElementById('confirmVenmoPayment');
+    if (venmoButton) {
+        venmoButton.addEventListener('click', function(event) {
+            const button = event.target;
+            button.style.animation = "sparkle 0.5s ease-out";
+            setTimeout(() => {
+                button.style.animation = "";
+            }, 500);
+        });
+    } else {
+        console.error("El botón 'confirmVenmoPayment' no se encontró en el DOM.");
+    }
+
+    // EVENTO PARA "QUITAR UNO"
+    setTimeout(() => {
+        const decreaseButtons = document.querySelectorAll('.decrease-btn');
+        if (decreaseButtons.length > 0) {
+            decreaseButtons.forEach(button => {
+                button.addEventListener('click', (event) => {
+                    const productId = event.target.getAttribute('data-id');
+                    decreaseQuantity(productId);
+                });
+            });
+        } else {
+            console.error("No se encontraron botones de 'Quitar uno'.");
+        }
+    }, 500);
+});
