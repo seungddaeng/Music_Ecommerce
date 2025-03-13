@@ -309,3 +309,113 @@ form button:hover {
     background-color: #005b8a;
   }
 >>>>>>> origin/master
+
+.payment-btn {
+    background: linear-gradient(to right, #ff9a9e, #fad0c4); /* Degradado rosita */
+    color: white;
+    font-weight: bold;
+    font-size: 18px;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 25px; /* Bordes redondeados para lo cute */
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0 4px 10px rgba(255, 182, 193, 0.4); /* Sombrilla suave */
+}
+
+.payment-btn:hover {
+    background: linear-gradient(to right, #fbc2eb, #a6c1ee); /* Degradado lila-rosado */
+    transform: scale(1.05); /* Efecto de agrandado */
+    box-shadow: 0 6px 15px rgba(255, 105, 180, 0.5); /* Brillo más intenso */
+}
+
+#userSelect {
+    font-size: 18px;
+    padding: 12px;
+    border-radius: 12px;
+    border: 2px solid #ff99cc;
+    background-color: #ffe6f2;
+    color: #333;
+    width: 100%;
+    max-width: 300px;
+    display: block;
+    margin: 10px auto;
+    transition: all 0.3s ease-in-out;
+}
+
+#userSelect:focus {
+    border-color: #ff66b2;
+    background-color: #ffccff;
+    outline: none;
+}
+
+#confirmVenmoPayment {
+    font-size: 18px;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px;
+    background-color: #ff66b2;
+    color: white;
+    cursor: pointer;
+    display: block;
+    margin: 10px auto;
+    width: 100%;
+    max-width: 300px;
+    transition: 0.3s;
+}
+
+#confirmVenmoPayment:hover {
+    background-color: #ff3385;
+}
+
+.clear-cart-btn {
+    background-color: #ff4d4d;
+    color: white;
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    display: block;
+    margin: 20px auto;
+    transition: 0.3s;
+}
+
+.clear-cart-btn:hover {
+    background-color: #cc0000;
+}
+
+.clear-cart-btn {
+    font-size: 16px;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 8px;
+    background-color: #ff6666; /* Rojo suave */
+    color: white;
+    cursor: pointer;
+    display: block;
+    margin: 10px auto;
+    width: 100%;
+    max-width: 300px;
+    transition: 0.3s;
+}
+
+.clear-cart-btn:hover {
+    background-color: #ff3333; /* Rojo más intenso al pasar el mouse */
+}
+
+.decrease-btn {
+    font-size: 14px;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #ffcc66; /* Naranja suave */
+    color: white;
+    cursor: pointer;
+    margin-left: 10px;
+    transition: 0.3s;
+}
+
+.decrease-btn:hover {
+    background-color: #ff9933; /* Naranja más intenso */
+}

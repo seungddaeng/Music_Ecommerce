@@ -29,7 +29,7 @@ function loadCart() {
                 <p>$${item.price}</p>
                 <p>Quantity: ${item.quantity}</p>
                 <button class="remove-btn" onclick="removeFromCart(${item.id})">Remove</button>
-            `;
+                <button class="decrease-btn" onclick="decreaseQuantity(${item.id})">Quitar uno</button>            `;
             cartItemsContainer.appendChild(cartItem);
 
             subtotal += item.price * item.quantity;
@@ -55,6 +55,8 @@ function removeFromCart(productId) {
 
     loadCart();
 }
+
+window.removeFromCart = removeFromCart;
 
 function openPaymentModal() {
     const modal = document.getElementById('paymentModal');
@@ -245,6 +247,8 @@ document.getElementById('confirmPaymentBtn').addEventListener('click', () => {
 
 document.addEventListener('DOMContentLoaded', loadCart);
 
+document.getElementById("clearCartBtn").addEventListener("click", clearCart);
+
 document.getElementById('venmoBtn').addEventListener('click', () => {
     openUserModal();
 });
@@ -298,3 +302,17 @@ function closeUserModal() {
 }
 
 window.closeUserModal = closeUserModal;
+
+document.getElementById('confirmVenmoPayment').addEventListener('click', function(event) {
+    const button = event.target;
+    button.style.animation = "sparkle 0.5s ease-out";
+
+    setTimeout(() => {
+        button.style.animation = "";
+    }, 500);
+});
+
+function clearCart() {
+    localStorage.removeItem('cart');
+    loadCart();
+}
