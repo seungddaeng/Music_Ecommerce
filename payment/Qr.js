@@ -1,33 +1,70 @@
-// Clase Qr.js
-class Qr {
-    constructor() {
-        // Inicializa la clase
+// Qr.js
+import { PaymentStrategy } from './PaymentStrategy.js';
+
+export class Qr extends PaymentStrategy {
+    async pay(amount) {
+        console.log(`Procesando pago de $${amount} mediante QR...`);
+
+        // Validar el pago
+        const isValid = await this.validatePayment();
+        if (!isValid) {
+            console.log("Pago fallido: Datos de QR inválidos.");
+            return false;
+        }
+
+        // Procesar el pago
+        const paymentSuccess = await this.processPayment(amount);
+        return paymentSuccess;
     }
 
-    makeCode(data) {
-        const qrCodeElement = document.getElementById('qr-code-container');
-        QRCode.toCanvas(qrCodeElement, data, { errorCorrectionLevel: 'H' }, function (error) {
-            if (error) console.error(error);
-            console.log('Código QR generado!');
-        });
+    async validatePayment() {
+        const qrCode = document.getElementById('qrCode').value;
+
+        // Validar que el código QR no esté vacío
+        if (!qrCode || qrCode.trim() === "") {
+            alert("Código QR inválido.");
+            return false;
+        }
+
+        // Simular validación con el servidor
+        try {
+            const response = await fetch('/validateQR', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ qrCode }),
+            });
+            const data = await response.json();
+            if (!data.success) {
+                alert(data.error || "Código QR no encontrado. Verifique los datos.");
+                return false;
+            }
+            return true;
+        } catch (error) {
+            console.error("Error al validar el código QR:", error);
+            return false;
+        }
     }
-    createImgTag() {
-            // Este método debería devolver un string con la etiqueta <img> del QR generado
-            const qrCodeElement = document.getElementById('qr-code-container');
-            return `<img src="${qrCodeElement.toDataURL()}" alt="Código QR">`;
+
+    async processPayment(amount) {
+        const qrCode = document.getElementById('qrCode').value;
+
+        // Simular procesamiento del pago con el servidor
+        try {
+            const response = await fetch('/processQRPayment', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ qrCode, amount }),
+            });
+            const data = await response.json();
+            if (!data.success) {
+                alert("Error al procesar el pago.");
+                return false;
+            }
+            console.log(`Pago exitoso: $${amount} descontados.`);
+            return true;
+        } catch (error) {
+            console.error("Error al procesar el pago:", error);
+            return false;
+        }
     }
 }
-
-// Función para generar el código QR
-function generateQRCode(amount) {
-    const qrData = {
-        amount: amount,
-        merchantId: 'your-merchant-id'
-    };
-    const qrCode = new Qr();
-    qrCode.makeCode(JSON.stringify(qrData)); // Genera el código QR con la información de pago
-    document.getElementById('qr-code-container').innerHTML = qrCode.createImgTag(); // Muestra el código QR en el contenedor
-}
-
-// Llamar a la función de generación de QR
-generateQRCode(100); // Ejemplo de monto
