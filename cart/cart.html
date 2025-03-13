@@ -51,6 +51,7 @@
       <div class="payment-methods">
         <button id="creditCardBtn" class="payment-btn">Pagar con Tarjeta</button>
         <button id="paypalBtn" class="payment-btn">Pagar con PayPal</button>
+        <button id="venmoBtn" class="payment-btn">Pagar con Venmo</button>
         <button id="cryptoBtn" class="payment-btn">Pagar con Criptomonedas</button>
         <button id="qrBtn" class="payment-btn">Pagar con QR</button>
       </div>
@@ -135,7 +136,20 @@
   </div>
 </div>
 
-
+<div id="userModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeUserModal()">&times;</span>
+    <h2>Selecciona el usuario de tu preferencia</h2>
+    <label for="userSelect">Selecciona tu usuario:</label>
+    <select id="userSelect">
+      <option value="Juan">Juan</option>
+      <option value="Lola">Lola</option>
+      <option value="PatoLucas">Pato Lucas</option>
+      <option value="BugsBunny">Bugs Bunny</option>
+    </select>
+    <button onclick="confirmVenmoPayment()">Confirmar Pago</button>
+  </div>
+</div>
 
 <footer class="footer">
   <div class="container">

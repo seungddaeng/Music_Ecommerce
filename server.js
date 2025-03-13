@@ -176,3 +176,20 @@ app.post("/processCryptoPayment", (req, res) => {
     }
   });
 });
+
+app.post('/savePayment', (req, res) => {
+    const { user, amount, method, status } = req.body;
+
+    const sql = "INSERT INTO payments (user, amount, method, status, created_at) VALUES (?, ?, ?, ?, NOW())";
+    const params = [user, amount, method, status];
+
+    db.query(sql, params, (err, results) => {
+        if (err) {
+            console.error("Error saving payment:", err);
+            res.status(500).json({ error: "Error saving payment" });
+        } else {
+            console.log("Pago guardado con éxito en la BD ;D :", results);
+            res.json({ success: true, message: "Pago registrado correctamente" });
+        }
+    });
+});

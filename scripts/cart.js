@@ -3,6 +3,7 @@ import { CreditCard } from "../payment/CreditCard.js";
 //import { PayPal } from "../payment/PayPal.js";
 import { Crypto } from "../payment/Crypto.js";
 //import { Qr } from "../payment/Qr.js";
+import { VenmoPayment } from "../payment/VenmoPayment.js";
 
 let criptoSeleccionada = "";
 
@@ -221,14 +222,58 @@ async function procesarPagoCrypto() {
     }
 }
 
-
-
-
-
-
-
-
-
-
-
 document.addEventListener('DOMContentLoaded', loadCart);
+
+document.getElementById('venmoBtn').addEventListener('click', () => {
+    openUserModal();
+});
+
+async function confirmVenmoPayment() {
+    const totalAmount = parseFloat(document.getElementById("total").innerText.replace("$", ""));
+    const selectedUser = document.getElementById("userSelect").value;
+
+    if (!selectedUser) {
+        alert("Por favor, selecciona un usuario antes de pagar, si no tienes uno puedes registrarte con Venmo ;)");
+        return;
+    }
+
+    const venmoPayment = new VenmoPayment(selectedUser);
+
+    try {
+        const success = await venmoPayment.pay(totalAmount);
+        if (success) {
+            alert(`Pago de $${totalAmount} realizado con éxito a través de Venmo.`);
+            localStorage.removeItem("cart");
+            window.location.href = "/index.html";
+        } else {
+            alert("Error en el pago. Inténtalo de nuevo.");
+        }
+    } catch (error) {
+        console.error("Error al procesar el pago con Venmo:", error);
+        alert("Hubo un problema con el pago...");
+    }
+}
+
+window.confirmVenmoPayment = confirmVenmoPayment;
+
+function openUserModal() {
+    const modal = document.getElementById("userModal");
+    if (modal) {
+        modal.style.display = "block";
+    } else {
+        console.error("No se encontró el modal de usuario.");
+    }
+}
+
+window.openUserModal = openUserModal;
+
+function closeUserModal() {
+    const modal = document.getElementById("userModal");
+    if (modal) {
+        modal.style.display = "none";
+    } else {
+        console.error("No se encontró el modal de usuario.");
+    }
+}
+
+window.closeUserModal = closeUserModal;
