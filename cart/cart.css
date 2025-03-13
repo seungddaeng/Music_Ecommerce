@@ -294,7 +294,7 @@ form button:hover {
 
   /* Estilo del botón de PayPal */
   .payment-btn {
-    background-color: #0070ba;
+    background-color: #aa80ff;
     color: white;
     padding: 12px 20px;
     border: none;
@@ -304,5 +304,5 @@ form button:hover {
   }
 
   .payment-btn:hover {
-    background-color: #005b8a;
+    background-color: #aa80ff;
   }
