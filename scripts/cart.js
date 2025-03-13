@@ -122,15 +122,6 @@ document.getElementById('qrBtn').addEventListener('click', () => {
     const total = parseFloat(document.getElementById('total').innerText.replace('$', ''));
     processPayment(new Qr(), total);
 });
-document.getElementById('nit').addEventListener('input', function (event) {
-    // Eliminar cualquier carácter que no sea un número
-    this.value = this.value.replace(/[^0-9]/g, '');
-
-    // Limitar a un máximo de 8 caracteres
-    if (this.value.length > 8) {
-        this.value = this.value.slice(0, 8); // Cortar el valor a 8 caracteres
-    }
-});
 
 
 // Función para abrir los distintos botones para abrir y cerrar modales

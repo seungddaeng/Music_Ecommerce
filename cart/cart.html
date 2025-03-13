@@ -191,7 +191,47 @@ if (carrito.length === 0) {
 </script>
 
 
+<button id="qrBtn" class="payment-btn">Pagar con QR</button>
 
+<div id="qrModal" class="modal" style="display: none;">
+  <div class="modal-content">
+    <span class="close" onclick="closeQrModal()">&times;</span>
+    <h2>Escanea el código QR para pagar</h2>
+    <img id="qrImage" src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://www.ejemplo.com/pago" alt="Código QR" width="200" />
+    <p>Escanea este código con tu aplicación de pago para completar la compra.</p>
+    <button id="confirmQrPayment" onclick="confirmQrPayment()" style="background-color: green; color: white; padding: 10px 20px; border: none; cursor: pointer;">Confirmar pago</button>
+  </div>
+</div>
+
+<script>
+  document.getElementById('qrBtn').addEventListener('click', function() {
+    document.getElementById('qrModal').style.display = 'block';
+  });
+
+  function closeQrModal() {
+    document.getElementById('qrModal').style.display = 'none';
+  }
+
+  function confirmQrPayment() {
+    const carrito = JSON.parse(localStorage.getItem('cart')) || [];
+
+    if (carrito.length === 0) {
+        alert("El carrito está vacío. Agrega productos antes de proceder al pago.");
+        return;
+    }
+
+    alert("Pago exitoso con QR.");
+    localStorage.removeItem('cart');
+
+    document.getElementById('subtotal').innerText = '$0.00';
+    document.getElementById('tax').innerText = '$0.00';
+    document.getElementById('shipping').innerText = '$0.00';
+    document.getElementById('total').innerText = '$0.00';
+
+    window.location.href = '/index.html';
+    closeQrModal();
+  }
+</script>
 
 <footer class="footer">
   <div class="container">
