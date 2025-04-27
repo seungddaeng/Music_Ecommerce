@@ -51,7 +51,8 @@
         <button id="creditCardBtn" class="payment-btn">Pagar con Tarjeta</button>
         <button id="venmoBtn" class="payment-btn">Pagar con Venmo</button>
         <button id="cryptoBtn" class="payment-btn">Pagar con Criptomonedas</button>
-        
+        <button id="qrBtn" class="payment-btn">Pagar con QR</button>
+        <button id="paypalBtn" class="payment-btn" onclick="showPaypalModal()">Pagar con PayPal</button>
       </div>
     
     </section>
@@ -142,7 +143,6 @@
 </div>
 
 
-<button id="paypalBtn" class="payment-btn" onclick="showPaypalModal()">Pagar con PayPal</button>
 
 <div id="paypalModal" class="modal">
   <div class="modal-content">
@@ -200,7 +200,6 @@ if (carrito.length === 0) {
 </style>
 
 
-<button id="qrBtn" class="payment-btn">Pagar con QR</button>
 
 <div id="qrModal" class="modal" style="display: none;">
   <div class="modal-content">
